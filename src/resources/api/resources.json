@@ -1,0 +1,20 @@
+[
+  {
+    "id": "res_1",
+    "title": "Chapter 1 Notes",
+    "description": "A comprehensive summary of the first chapter, covering all key concepts.",
+    "link": "https://example.com/notes/chapter1.pdf"
+  },
+  {
+    "id": "res_2",
+    "title": "Interactive Git Tutorial",
+    "description": "An external website that lets you practice Git commands in your browser.",
+    "link": "https://learngitbranching.js.org/"
+  },
+  {
+    "id": "res_3",
+    "title": "CSS Flexbox Guide",
+    "description": "A complete visual guide to CSS Flexbox, with examples.",
+    "link": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/"
+  }
+]

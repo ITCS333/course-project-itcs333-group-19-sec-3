@@ -1,0 +1,32 @@
+[
+  {
+    "id": "week_1",
+    "title": "Week 1: Introduction to HTML",
+    "startDate": "2025-10-27",
+    "description": "This week covers the fundamental building blocks of the web: HTML. We will explore semantic tags, document structure, and basic elements like headings, paragraphs, links, and images.",
+    "links": [
+      "https://developer.mozilla.org/en-US/docs/Web/HTML",
+      "https://www.w3schools.com/html/html_basic.asp"
+    ]
+  },
+  {
+    "id": "week_2",
+    "title": "Week 2: Introduction to CSS",
+    "startDate": "2025-11-03",
+    "description": "Learn how to style your HTML documents. We will cover selectors, the box model, colors, fonts, and basic layouts.",
+    "links": [
+      "https://developer.mozilla.org/en-US/docs/Web/CSS",
+      "https://css-tricks.com/guides/beginner/"
+    ]
+  },
+  {
+    "id": "week_3",
+    "title": "Week 3: CSS Flexbox and Grid",
+    "startDate": "2025-11-10",
+    "description": "A deep dive into modern CSS layout techniques. We will master Flexbox for 1D layouts and CSS Grid for 2D layouts.",
+    "links": [
+      "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+      "https://css-tricks.com/snippets/css/complete-guide-grid/"
+    ]
+  }
+]

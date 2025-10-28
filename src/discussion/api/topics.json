@@ -1,0 +1,16 @@
+[
+  {
+    "id": "topic_1",
+    "subject": "Question about CSS Flexbox",
+    "message": "I can't get my items to space out evenly. I'm using `display: flex` but they are all bunched up. What am I missing?",
+    "author": "Rashid",
+    "date": "2025-10-25"
+  },
+  {
+    "id": "topic_2",
+    "subject": "JavaScript `fetch` API error handling",
+    "message": "How do I properly catch errors from `fetch`? My `.catch()` block doesn't seem to fire for 404 errors.",
+    "author": "Khalifa",
+    "date": "2025-10-26"
+  }
+]

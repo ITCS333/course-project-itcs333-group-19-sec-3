@@ -1,0 +1,23 @@
+[
+  {
+    "id": "asg_1",
+    "title": "Assignment 1: HTML Basics",
+    "description": "Create a semantic HTML structure for a personal portfolio. Focus on using tags like <header>, <nav>, <main>, <article>, and <footer>.",
+    "dueDate": "2025-11-10",
+    "files": ["portfolio-requirements.pdf", "examples.zip"]
+  },
+  {
+    "id": "asg_2",
+    "title": "Assignment 2: CSS Styling",
+    "description": "Style your HTML portfolio using modern CSS. You must use Flexbox or Grid for layout and include at least one CSS animation.",
+    "dueDate": "2025-11-17",
+    "files": ["style-guide.pdf"]
+  },
+  {
+    "id": "asg_3",
+    "title": "Assignment 3: JavaScript Events",
+    "description": "Make your portfolio interactive. Add event listeners to create a modal window for your projects and a theme switcher (light/dark mode).",
+    "dueDate": "2025-11-24",
+    "files": ["js-requirements.pdf", "event-listeners-guide.txt"]
+  }
+]

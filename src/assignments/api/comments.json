@@ -1,0 +1,19 @@
+{
+  "asg_1": [
+    {
+      "author": "Fatema Ahmed",
+      "text": "Is it okay to use a 'section' inside an 'article'?"
+    },
+    {
+      "author": "Mohamed Abdulla",
+      "text": "Can we use a CSS framework for this first assignment?"
+    }
+  ],
+  "asg_2": [
+    {
+      "author": "Noora Salman",
+      "text": "Having trouble with Flexbox. Any good tutorials?"
+    }
+  ],
+  "asg_3": []
+}
