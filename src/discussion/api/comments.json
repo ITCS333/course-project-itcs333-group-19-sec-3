@@ -1,0 +1,24 @@
+{
+  "topic_1": [
+    {
+      "id": "reply_101",
+      "author": "Khalid",
+      "date": "2025-10-25",
+      "text": "Have you tried `justify-content: space-between` on the flex container?"
+    },
+    {
+      "id": "reply_102",
+      "author": "Aysha",
+      "date": "2025-10-25",
+      "text": "That was it, thanks!"
+    }
+  ],
+  "topic_2": [
+    {
+      "id": "reply_201",
+      "author": "Hamad",
+      "date": "2025-10-27",
+      "text": "`fetch` only rejects on network errors. You have to check `response.ok` or `response.status` for HTTP errors like 404 or 500."
+    }
+  ]
+}

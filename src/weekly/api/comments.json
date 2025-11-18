@@ -1,0 +1,19 @@
+{
+  "week_1": [
+    {
+      "author": "Ali Hassan",
+      "text": "I'm confused about the difference between <section> and <article>."
+    },
+    {
+      "author": "Fatema Ahmed",
+      "text": "Are we allowed to use <b> and <i> tags, or should we always use <strong> and <em>?"
+    }
+  ],
+  "week_2": [
+    {
+      "author": "Ali Hassan",
+      "text": "The box model is tricky. Does the border count as part of the width?"
+    }
+  ],
+  "week_3": []
+}
