@@ -142,6 +142,29 @@ function handleChangePassword(event) {
  */
 function handleAddStudent(event) {
   // ... your implementation here ...
+  event.preventDefault();
+  const name = document.getElementById("student-name").value;
+  const id = document.getElementById("student-id").value;
+  const email = document.getElementById("student-email").value;
+  const defaultPassword = document.getElementById("default-password").value;
+   if (!name || !id || !email) {
+        alert("Please fill out all required fields.");
+        return;
+    }
+  const duplicate = students.some(student => student.id === id);
+    if (duplicate) {
+        alert("A student with this ID already exists.");
+        return;
+    }
+  const newStudent = { name, id, email };
+  students.push(newStudent);
+  renderTable(students);
+  
+  document.getElementById("student-name").value = "";
+  document.getElementById("student-id").value = "";
+  document.getElementById("student-email").value = "";
+  document.getElementById("default-password").value = "password123"; 
+
 }
 
 /**
@@ -157,6 +180,12 @@ function handleAddStudent(event) {
  */
 function handleTableClick(event) {
   // ... your implementation here ...
+  const target = event.target;
+   if (target.classList.contains("delete-btn")) {
+        const studentId = target.dataset.id;
+        students = students.filter(student => student.id !== studentId);
+        renderTable(students);
+   }
 }
 
 /**
@@ -172,7 +201,17 @@ function handleTableClick(event) {
  */
 function handleSearch(event) {
   // ... your implementation here ...
+  const searchTerm = searchInput.value.toLowerCase();
+  if (!searchTerm) {
+        renderTable(students);
+        return;
+    }
+  const filteredStudents = students.filter(student => 
+        student.name.toLowerCase().includes(searchTerm)
+    );
+  renderTable(filteredStudents);
 }
+
 
 /**
  * TODO: Implement the handleSort function.
