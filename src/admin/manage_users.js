@@ -18,17 +18,18 @@ let students = [];
 // the HTML document is parsed before this script runs.
 
 // TODO: Select the student table body (tbody).
-const tableBody= document.querySelector("#students-table-body");
+const tbody= document.querySelector("#students-table-body");
 // TODO: Select the "Add Student" form.
 // (You'll need to add id="add-student-form" to this form in your HTML).
-
+const addStudentForm= document.getElementById("add-student-form");
 // TODO: Select the "Change Password" form.
 // (You'll need to add id="password-form" to this form in your HTML).
-
+const passwordForm= document.getElementById("password-form");
 // TODO: Select the search input field.
 // (You'll need to add id="search-input" to this input in your HTML).
-
+const searchInput= document.getElementById("search-input");
 // TODO: Select all table header (th) elements in thead.
+const tableHeaders= document.querySelectorAll("#student-table thead th");
 
 // --- Functions ---
 
