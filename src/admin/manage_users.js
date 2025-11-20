@@ -46,6 +46,35 @@ const tableHeaders= document.querySelectorAll("#student-table thead th");
  */
 function createStudentRow(student) {
   // ... your implementation here ...
+  const tr= document.createElement("tr");
+  const stuName= document.createElement("td");
+    stuName.textContent = student.name;
+    tr.appendChild(stuName);
+
+   const stuId = document.createElement("td");
+    stuId.textContent = student.id;
+    tr.appendChild(stuId);
+  
+    const stuEmail = document.createElement("td");
+    stuEmail.textContent = student.email;
+    tr.appendChild(stuEmail);
+
+    const tdButtons = document.createElement("td");
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.classList.add("edit-btn");
+    editBtn.setAttribute("data-id", student.id);
+    tdButtons.appendChild(editBtn);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.setAttribute("data-id", student.id);
+    tdButtons.appendChild(deleteBtn);
+  
+   tr.appendChild(tdButtons);
+    return tr;
+
 }
 
 /**
@@ -58,6 +87,10 @@ function createStudentRow(student) {
  */
 function renderTable(studentArray) {
   // ... your implementation here ...
+    studentTableBody.innerHTML = "";
+  studentArray.forEach(student => {
+        const tr = createStudentRow(student);
+        studentTableBody.appendChild(tr);
 }
 
 /**
@@ -74,6 +107,22 @@ function renderTable(studentArray) {
  */
 function handleChangePassword(event) {
   // ... your implementation here ...
+ event.preventDefault();
+ const currentPassword = document.getElementById("current-password").value;
+ const newPassword = document.getElementById("new-password").value;
+ const confirmPassword = document.getElementById("confirm-password").value;
+   if (newPassword !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+  if (newPassword.length < 8) {
+        alert("Password must be at least 8 characters.");
+        return;
+    }
+  alert("Password updated successfully!");
+  document.getElementById("current-password").value = "";
+  document.getElementById("new-password").value = "";
+  document.getElementById("confirm-password").value = "";
 }
 
 /**
