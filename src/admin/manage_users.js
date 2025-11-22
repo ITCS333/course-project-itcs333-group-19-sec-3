@@ -229,6 +229,32 @@ function handleSearch(event) {
  */
 function handleSort(event) {
   // ... your implementation here ...
+  const th = event.currentTarget;        
+  const colIndex = th.cellIndex;
+  let sortKey = "";
+  if (colIndex === 0) 
+    sortKey = "id";
+  if (colIndex === 1) 
+    sortKey = "name";
+  if (colIndex === 2) 
+    sortKey = "email";
+
+  let currentDir = th.dataset.sortDir || "asc";
+  let newDir = currentDir === "asc" ? "desc" : "asc";
+  th.dataset.sortDir = newDir;
+
+  students.sort((a, b) => {
+    let valA = a[sortKey];
+    let valB = b[sortKey];
+
+    if (sortKey === "id") {
+      return newDir === "asc" ? (valA - valB) : (valB - valA);
+    }
+    return newDir === "asc"
+      ? valA.localeCompare(valB)
+      : valB.localeCompare(valA);
+  });
+  renderTable(students);
 }
 
 /**
@@ -249,6 +275,28 @@ function handleSort(event) {
  */
 async function loadStudentsAndInitialize() {
   // ... your implementation here ...
+  try {
+    const response = await fetch("students.json");
+    if (!response.ok) {
+      console.error("Failed to load students.json");
+      return;
+    }
+    const data = await response.json();
+    students = data;
+    renderTable(students);
+    
+    changePasswordForm.addEventListener("submit", handleChangePassword);
+    addStudentForm.addEventListener("submit", handleAddStudent);
+    studentTableBody.addEventListener("click", handleTableClick);
+    searchInput.addEventListener("input", handleSearch);
+    tableHeaders.forEach(th => {
+      th.addEventListener("click", handleSort);
+    });
+
+  } catch (error) {
+    console.error("Error loading students:", error);
+  }
+
 }
 
 // --- Initial Page Load ---
