@@ -35,7 +35,7 @@
             <!-- TODO: Add a sub-heading (e.g., 'h2') with the text "Change Your Password". -->
 <h2>Change Your Password</h2>
             <!-- TODO: Create a 'form' for changing the password. The 'action' can be '#'. -->
-    <form action="#">
+    <form action="#" id="password-form">
                 <!-- TODO: Use a 'fieldset' to group the password-related fields. -->
       <fieldset>
                     <!-- TODO: Add a 'legend' for the fieldset, e.g., "Password Update". -->
@@ -88,7 +88,7 @@
                 <!-- TODO: Add a 'summary' element inside 'details' with the text "Add New Student". -->
      <summary>Add New Student</summary>
                 <!-- TODO: Create a 'form' for adding a new student. 'action' can be '#'. -->
-      <form for="#">
+      <form for="#" id="add-student-form">
                     <!-- TODO: Use a 'fieldset' to group the new student fields. -->
         <fieldset>
                         <!-- TODO: Add a 'legend' for the fieldset, e.g., "New Student Information". -->
@@ -133,6 +133,8 @@
             <!-- End of the 'details' element. -->
     </details>
   </section>
+  
+  <input type="text" id="search-input" placeholder="Search students">
 
 
             <!-- Subsection 2.2: Student List -->
@@ -142,7 +144,7 @@
             <!-- TODO: Create a 'table' to display the list of students. Give it an id="student-table". -->
     <table id="student-table">
                 <!-- TODO: Create a 'thead' for the table headers. -->
-      <thread>
+      <thead>
                     <!-- TODO: Create a 'tr' (table row) inside the 'thead'. -->
         <tr>
                         <!-- TODO: Create 'th' (table header) cells for "Name", "Student ID", "Email", and "Actions". -->
@@ -153,7 +155,7 @@
                     <!-- End of the row. -->
         </tr>
                 <!-- End of 'thead'. -->
-      </thread>
+      </thead>
 
                 <!-- TODO: Create a 'tbody' for the table body, where student data will go. -->
       <tbody>
@@ -205,7 +207,7 @@
 
     <!-- End of the main content area. -->
 </main>
-
+<script src="manage_users.js" defer></script>
 </body>
 </html>
 

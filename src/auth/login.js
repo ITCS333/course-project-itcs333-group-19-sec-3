@@ -18,13 +18,13 @@
 // the HTML document is parsed before this script runs.
 
 // TODO: Select the login form. (You'll need to add id="login-form" to the <form> in your HTML).
-
+const loginForm = document.getElementById('login-form');
 // TODO: Select the email input element by its ID.
-
+const emailInput = document.getElementById('email');
 // TODO: Select the password input element by its ID.
-
+const passwordInput = document.getElementById('password');
 // TODO: Select the message container element by its ID.
-
+const messageContainer = document.getElementById('message-container');
 // --- Functions ---
 
 /**
@@ -40,6 +40,9 @@
  */
 function displayMessage(message, type) {
   // ... your implementation here ...
+ messageContainer.textContent = message;  
+ messageContainer.className = type;       
+
 }
 
 /**
@@ -56,6 +59,8 @@ function displayMessage(message, type) {
  */
 function isValidEmail(email) {
   // ... your implementation here ...
+     const regex = /\S+@\S+\.\S+/;
+    return regex.test(email);
 }
 
 /**
@@ -70,6 +75,7 @@ function isValidEmail(email) {
  */
 function isValidPassword(password) {
   // ... your implementation here ...
+ return password.length >= 8;
 }
 
 /**
@@ -88,6 +94,20 @@ function isValidPassword(password) {
  */
 function handleLogin(event) {
   // ... your implementation here ...
+ event.preventDefault();
+const email = emailInput.value.trim();
+const password = passwordInput.value.trim();
+if (!isValidEmail(email)) {
+        displayMessage("Invalid email format.", "error");
+        return; 
+    }
+if (!isValidPassword(password)) {
+        displayMessage("Password must be at least 8 characters.", "error");
+        return;
+    }
+displayMessage("Login successful!", "success");
+emailInput.value = "";
+passwordInput.value = "";
 }
 
 /**
@@ -100,6 +120,9 @@ function handleLogin(event) {
  */
 function setupLoginForm() {
   // ... your implementation here ...
+  if (!loginForm) 
+    return;
+  loginForm.addEventListener("submit", handleLogin);
 }
 
 // --- Initial Page Load ---
