@@ -16,8 +16,74 @@
     <!-- TODO: Add a 'title' for the page, e.g., "Admin Portal". -->
 <title>Admin Portal</title>
     <!-- TODO: Link to a CSS file or a CSS framework. -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+<style>
+        body {
+            background-color: #f0f2f5; /* Light background */
+            color: #212529; /* Dark text */
+        }
+        header {
+            background: #2c3e50; /* Blue background */
+            padding: 20px;
+            text-align: center;
+        }
+        h1{
+          color: white;
+        }
+        main {
+            padding: 20px;
+            max-width: 800px; /* Max width */
+            margin: 0 auto; /* Center align */
+        }
+        section {
+            margin-bottom: 30px; /* Space between sections */
+            padding: 20px;
+            background: white; /* White background for sections */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        h2 {
+            color: #2c3e50; /* Darker blue for headings */
+        }
+        button {
+            padding: 10px 15px; /* Button padding */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            color: white; /* Button text color */
+            border: none;
+        }
+       .edit-button {
+            background: #28a745; 
+        }
+       button.edit-button:hover {
+            background: #1f8437; /* Darker green on hover */
+        }
+        .delete-button {
+            background: #dc3545; 
+        }
+        button.delete-button:hover {
+            background: #992530; /* Darker red on hover */
+        }
+        
+        table {
+            width: 100%; /* Full width */
+            border-collapse: collapse; /* No gaps between table cells */
+        }
+        th, td {
+            text-align: left; /* Left alignment */
+            padding: 10px; /* Cell padding */
+            border-bottom: 1px solid #ddd; /* Bottom border */
+        }
+        th {
+            background: #2c3e50; /* Light gray header */
+            color: #f0f2f5;
+            font-weight: bold; /* Bold text */
+        }
+        .search-section {
+            margin: 20px 0; /* Margin for search input */
+        }
+        
+    </style>
 </head>
 <body>
 
@@ -171,9 +237,9 @@
                         <!-- TODO: Create a final 'td' for action buttons. -->
           <td>
                             <!-- TODO: Add an "Edit" button. -->
-            <button>Edit</button>
+            <button class="edit-button">Edit</button>
                             <!-- TODO: Add a "Delete" button. -->
-            <button>Delete</button>
+            <button class="delete-button">Delete</button>
                         <!-- End of the actions 'td'. -->
           </td>
                     <!-- End of the student row. -->
@@ -185,8 +251,8 @@
           <td>202303352</td>
           <td>latifaymzubari@gmail.com</td>
           <td>
-            <button>Edit</button>
-            <button>Delete</button>
+            <button class="edit-button">Edit</button>
+            <button class="delete-button">Delete</button>
           </td>
         </tr>
          <tr>
@@ -194,8 +260,8 @@
           <td>202312345</td>
           <td>noorHassan@gmail.com</td>
           <td>
-            <button>Edit</button>
-            <button>Delete</button>
+            <button class="edit-button">Edit</button>
+            <button class="delete-button">Delete</button>
           </td>
         </tr>
                 <!-- End of 'tbody'. -->
