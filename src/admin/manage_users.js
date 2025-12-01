@@ -91,6 +91,7 @@ function renderTable(studentArray) {
   studentArray.forEach(student => {
         const tr = createStudentRow(student);
         studentTableBody.appendChild(tr);
+      });
 }
 
 /**

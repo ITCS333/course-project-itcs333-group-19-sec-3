@@ -217,7 +217,7 @@ function createStudent($db, $data) {
     $stmt->execute();
 
     if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-        http_response_code(409); // Conflict
+        http_response_code(409); 
         echo json_encode([
             "success" => false,
             "message" => "Student ID or email already exists"
@@ -244,13 +244,13 @@ function createStudent($db, $data) {
     // If yes, return success response with 201 status (Created)
     // If no, return error response with 500 status
     if ($result) {
-        http_response_code(201); // Created
+        http_response_code(201); 
         echo json_encode([
             "success" => true,
             "message" => "Student created successfully"
         ]);
     } else {
-        http_response_code(500); // Server error
+        http_response_code(500); 
         echo json_encode([
             "success" => false,
             "message" => "Failed to create student"

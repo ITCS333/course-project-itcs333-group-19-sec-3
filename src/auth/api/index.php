@@ -82,21 +82,10 @@ if (strlen($password) < 8) {
 // Assume getDBConnection() returns a PDO instance with error mode set to exception
 // The function is defined elsewhere (e.g., in a config file or db.php)
 $db = getDBConnection();
-
+require_once'../../db.php';
 // TODO: Wrap database operations in a try-catch block to handle PDO exceptions
 // This ensures you can return a proper JSON error response if something goes wrong
 try {
-    $stmt = $db->prepare("SELECT * FROM students WHERE email = :email");
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);    
-} catch (PDOException $e) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Database error: " . $e->getMessage()]);
-    exit;
-}
-
     // --- Prepare SQL Query ---
     // TODO: Write a SQL SELECT query to find the user by email
     // Select the following columns: id, name, email, password
@@ -129,9 +118,9 @@ try {
     // TODO: Check if a user was found
     // The fetch method returns false if no record matches
     if (!$user) {
-    echo json_encode(['success' => false,
-                      'message' => 'User not found']);
-    http_response_code(404);
+    echo json_encode([
+        'success' => false,
+        'message' => 'User not found']);
     exit;
     }
 
@@ -159,11 +148,6 @@ try {
         $_SESSION['user_name']  = $user['name'];
         $_SESSION['user_email'] = $user['email'];
         $_SESSION['logged_in']  = true;
-
-        echo json_encode([
-           'success' => true,
-           'message' => 'Login successful!']);
-            exit;
 
         // TODO: Prepare a success response array
         // Include:
@@ -210,19 +194,24 @@ try {
 
 // TODO: Catch PDO exceptions in the catch block
 // Catch PDOException type
-
+        }catch(PDOException $e){
 
     // TODO: Log the error for debugging
     // Use error_log() to write the error message to the server error log
-    
+    error_log("PDO Error: " . $e->getMessage());
+
     
     // TODO: Return a generic error message to the client
     // DON'T expose database details to the user for security reasons
     // Return a JSON response with success false and a generic message
-
-
+    echo json_encode([
+        'success' => false,
+        'message' => 'Server error. Please try again later.'
+    ]);
+    
     // TODO: Exit the script
-
+    exit;
+        }
 
 // --- End of Script ---
 
