@@ -279,11 +279,11 @@ async function loadStudentsAndInitialize() {
   try {
 const response = await fetch("../api/index.php");
     if (!response.ok) {
-      console.error("Failed to load students.json");
+console.error("Failed to load students from API");
       return;
     }
     const data = await response.json();
-    students = data;
+    students = data.data || [];
     renderTable(students);
     
     changePasswordForm.addEventListener("submit", handleChangePassword);
