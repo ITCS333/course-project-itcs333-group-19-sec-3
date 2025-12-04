@@ -277,7 +277,7 @@ function handleSort(event) {
 async function loadStudentsAndInitialize() {
   // ... your implementation here ...
   try {
-const response = await fetch("../api/index.php");
+const response = await fetch("./api/index.php");
     if (!response.ok) {
 console.error("Failed to load students from API");
       return;
