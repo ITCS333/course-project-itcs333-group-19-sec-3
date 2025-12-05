@@ -17,9 +17,9 @@ let resources = [];
 
 // --- Element Selections ---
 // TODO: Select the resource form ('#resource-form').
-
+const resourceForm = document.querySelector("#resource-form");
 // TODO: Select the resources table body ('#resources-tbody').
-
+const resourcesTableBody = document.querySelector("#resources-tbody"); 
 // --- Functions ---
 
 /**
@@ -33,7 +33,20 @@ let resources = [];
  * - A "Delete" button with class "delete-btn" and `data-id="${id}"`.
  */
 function createResourceRow(resource) {
-  // ... your implementation here ...
+  const { id, title, description } = resource;
+
+  const tr = document.createElement("tr");
+
+  tr.innerHTML = `
+        <td>${title}</td>
+        <td>${description}</td>
+        <td>
+            <button class="edit-btn" data-id="${id}">Edit</button>
+            <button class="delete-btn" data-id="${id}">Delete</button>
+        </td>
+    `;
+
+  return tr;
 }
 
 /**
@@ -45,7 +58,12 @@ function createResourceRow(resource) {
  * append the resulting <tr> to `resourcesTableBody`.
  */
 function renderTable() {
-  // ... your implementation here ...
+   resourcesTableBody.innerHTML = ""; 
+
+  resources.forEach(resource => {
+    const row = createResourceRow(resource);
+    resourcesTableBody.appendChild(row);
+  });
 }
 
 /**
@@ -60,7 +78,29 @@ function renderTable() {
  * 6. Reset the form.
  */
 function handleAddResource(event) {
-  // ... your implementation here ...
+  event.preventDefault(); 
+
+  const title = document.querySelector("#resource-title").value.trim();
+  const description = document.querySelector("#resource-description").value.trim();
+  const link = document.querySelector("#resource-link").value.trim();
+
+  if (!title || !link) {
+    alert("Title and Link are required.");
+    return;
+  }
+
+  const newResource = {
+    id: `res_${Date.now()}`,
+    title,
+    description,
+    link
+  };
+
+  resources.push(newResource);
+
+  renderTable();
+
+  resourceForm.reset();
 }
 
 /**
@@ -74,7 +114,15 @@ function handleAddResource(event) {
  * 4. Call `renderTable()` to refresh the list.
  */
 function handleTableClick(event) {
-  // ... your implementation here ...
+  const target = event.target;
+
+  if (target.classList.contains("delete-btn")) {
+    const idToDelete = target.dataset.id;
+
+    resources = resources.filter(resource => resource.id !== idToDelete);
+
+    renderTable();
+  }
 }
 
 /**
@@ -88,7 +136,19 @@ function handleTableClick(event) {
  * 5. Add the 'click' event listener to `resourcesTableBody` (calls `handleTableClick`).
  */
 async function loadAndInitialize() {
-  // ... your implementation here ...
+  try {
+    const response = await fetch("api/resources.json");
+    resources = await response.json();
+
+    renderTable(); // first table render
+
+    // Add event listeners
+    resourceForm.addEventListener("submit", handleAddResource);
+    resourcesTableBody.addEventListener("click", handleTableClick);
+
+  } catch (error) {
+    console.error("Error loading resources:", error);
+  }
 }
 
 // --- Initial Page Load ---

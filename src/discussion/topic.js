@@ -10,8 +10,6 @@ const replyListContainer = document.getElementById('reply-list-container');
 const replyForm = document.getElementById('reply-form');
 const newReplyText = document.getElementById('new-reply');
 
-// --- Functions ---
-
 function getTopicIdFromURL() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
@@ -38,7 +36,7 @@ function createReplyArticle(reply) {
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('delete-reply-btn');
-    deleteBtn.dataset.id = reply.reply_id;
+    deleteBtn.dataset.id = reply.id;
     actions.appendChild(deleteBtn);
     article.appendChild(actions);
 
@@ -96,10 +94,9 @@ async function handleAddReply(event){
     if(!text) return;
 
     const payload = {
-        reply_id: `reply_${Date.now()}`,
         topic_id: currentTopicId,
         text,
-        author: 'Student' // لاحقًا يمكن الحصول من $_SESSION
+        // author: 'Student' // optional
     };
 
     try{
@@ -113,7 +110,7 @@ async function handleAddReply(event){
             fetchReplies();
             replyForm.reset();
         } else {
-            alert(data.error);
+            alert(data.error || 'Failed to post reply.');
         }
     } catch(err){
         console.error(err);
@@ -125,6 +122,7 @@ async function handleAddReply(event){
 async function handleReplyListClick(event){
     if(event.target.classList.contains('delete-reply-btn')){
         const replyId = event.target.dataset.id;
+        if(!confirm('Are you sure you want to delete this reply?')) return;
         try{
             const res = await fetch(`/api/discussion.php?resource=replies&id=${replyId}`, {
                 method: 'DELETE'
@@ -133,7 +131,7 @@ async function handleReplyListClick(event){
             if(data.success){
                 fetchReplies();
             } else {
-                alert(data.error);
+                alert(data.error || 'Failed to delete reply.');
             }
         } catch(err){
             console.error(err);

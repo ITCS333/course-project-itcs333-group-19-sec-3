@@ -9,79 +9,241 @@
 <html lang="en">
 <head>
     <!-- TODO: Add the 'meta' tag for character encoding (UTF-8). -->
-    
+     <meta charset="UTF-8">
     <!-- TODO: Add the responsive 'viewport' meta tag.
          The 'name' should be 'viewport' and the 'content' should set the 'width' to 'device-width'
          and the 'initial-scale' to '1.0'. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- TODO: Add a title, e.g., "Manage Resources". -->
-
+     <title>Manage Resources</title>
     <!-- TODO: Link to your CSS framework or stylesheet. -->
+      <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 6px;
+        }
+
+        h1, h2 {
+            margin: 0 0 15px 0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        fieldset {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        legend {
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #ecf0f1;
+        }
+
+        td button {
+            margin-right: 8px;
+            background-color: #7f8c8d;
+        }
+
+        td button:hover {
+            background-color: #636e72;
+        }
+
+        td button:last-child {
+            background-color: #e74c3c;
+        }
+
+        td button:last-child:hover {
+            background-color: #c0392b;
+        }
+    </style>
 </head>
 <body>
 
     <!-- TODO: Create a 'header' with a main heading ('h1') "Manage Course Resources". -->
-
+    <header>
+        <h1>Manage Course Resources</h1>
+    </header>
     <!-- TODO: Create the 'main' content area. -->
+    <main>
 
         <!-- Section 1: Add/Edit Resource Form -->
         <!-- TODO: Create a 'section' for the form. -->
+        <section>
             <!-- TODO: Add a sub-heading ('h2') "Add a New Resource". -->
+            <h2>Add a New Resource</h2>
 
-            <!-- TODO: Create a 'form' with an id "resource-form". Action can be '#'. -->
+             <!-- TODO: Create a 'form' with an id "resource-form". Action can be '#'. -->
+            <form id="resource-form" action="#">
+
                 <!-- TODO: Use a 'fieldset' to group the form controls. -->
+                <fieldset>
+
                     <!-- TODO: Add a 'legend', e.g., "Resource Details". -->
+                    <legend>Resource Details</legend>
 
-                    <!-- TODO: Add a 'label' and 'input' for the resource title.
-                         - label 'for': "resource-title"
-                         - input 'id': "resource-title", type="text", required -->
+                    <!-- TODO: Add a 'label' and 'input' for the resource title. -->
+                    <label for="resource-title">Resource Title:</label>
+                    <input id="resource-title" type="text" required>
 
-                    <!-- TODO: Add a 'label' and 'textarea' for the resource description.
-                         - label 'for': "resource-description"
-                         - textarea 'id': "resource-description" -->
-                    
-                    <!-- TODO: Add a 'label' and 'input' for the resource link.
-                         - label 'for': "resource-link"
-                         - input 'id': "resource-link", type="url", required -->
+                    <!-- TODO: Add a 'label' and 'textarea' for the resource description. -->
+                    <label for="resource-description">Resource Description:</label>
+                    <textarea id="resource-description"></textarea>
 
-                    <!-- TODO: Add a 'button' to submit the form.
-                         - id="add-resource", type="submit", Text: "Add Resource" -->
+                    <!-- TODO: Add a 'label' and 'input' for the resource link. -->
+                    <label for="resource-link">Resource Link:</label>
+                    <input id="resource-link" type="url" required>
+
+                    <!-- TODO: Add a 'button' to submit the form. -->
+                    <button id="add-resource" type="submit">Add Resource</button>
+
+                </fieldset>
                 <!-- End of fieldset. -->
+
+            </form>
             <!-- End of form. -->
+        </section>
         <!-- End of form section. -->
 
 
         <!-- Section 2: Existing Resources List -->
         <!-- TODO: Create a 'section' to display the list of current resources. -->
+        <section>
             <!-- TODO: Add a sub-heading ('h2') "Existing Resources". -->
+            <h2>Existing Resources</h2>
 
             <!-- TODO: Create a 'table' with id "resources-table". -->
+            <table id="resources-table">
+
                 <!-- TODO: Create a 'thead' and a 'tr' inside it. -->
-                    <!-- TODO: Add 'th' elements for "Title", "Description", and "Actions". -->
-                
+                <thead>
+                    <tr>
+                        <!-- TODO: Add 'th' elements for "Title", "Description", and "Actions". -->
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
                 <!-- TODO: Create a 'tbody' for the data. -->
-                    <!-- TODO: Add 2-3 rows of dummy data to see the structure. -->
+                <tbody id="resources-tbody">
+
                     <!-- Example Row 1: -->
                     <!-- TODO: Create a 'tr' for the first resource. -->
-                        <!-- TODO: Add 'td' cells for a title (e.g., "Chapter 1 Notes") and a description. -->
-                        
+                    <tr>
+                        <!-- TODO: Add 'td' cells for a title and a description. -->
+                        <td>Chapter 1 Notes</td>
+                        <td>Introduction to the basics of HTML.</td>
+
                         <!-- TODO: Add a 'td' containing the action buttons. -->
-                            <!-- TODO: Add an "Edit" button. -->
-                            <!-- TODO: Add a "Delete" button. -->
-                        <!-- End of actions 'td'. -->
+                        <td>
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
                     <!-- End of the row. -->
 
                     <!-- Example Row 2: -->
-                    <!-- TODO: Create another 'tr' for a second resource (e.g., a web link). -->
-                        <!-- TODO: Add 'td' cells for the title and description. -->
-                        <!-- TODO: Add a 'td' with "Edit" and "Delete" buttons. -->
-                    <!-- End of the row. -->
+                    <tr>
+                        <td>External Tutorial</td>
+                        <td>A useful beginner-friendly guide to CSS.</td>
 
-                <!-- End of tbody. -->
-            <!-- End of table. -->
+                        <!-- TODO: Add action buttons. -->
+                        <td>
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    <!-- End of row -->
+
+                </tbody>
+                <!-- End of tbody -->
+
+            </table>
+            <!-- End of table -->
+        </section>
         <!-- End of resources list section. -->
 
+    </main>
     <!-- End of main. -->
+     <script src="admin.js" defer></script>
+    
 </body>
 </html>
 

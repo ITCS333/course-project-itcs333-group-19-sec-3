@@ -8,57 +8,191 @@
 <html lang="en">
 <head>
     <!-- TODO: Add meta tags for charset and viewport. -->
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <!-- TODO: Add a title. You can make it dynamic later, but for now, use "Resource Details". -->
+    <title>Resource Details</title>
 
     <!-- TODO: Link to your CSS framework or stylesheet. -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #34495e;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+        }
+
+        main {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        article, section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Comments */
+        .comment {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2980b9;
+        }
+
+        .comment footer {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* Comment Form */
+        fieldset {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        legend {
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2980b9;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #1f6490;
+        }
+    </style>
+
 </head>
 <body>
     <!-- TODO: Create a 'header' with a main heading ('h1'). You can use a dummy title like "Chapter 1 Notes". -->
+    <header>
+        <h1 id="resource-title">Chapter 1 Notes</h1>
+    </header>
 
     <!-- TODO: Create the 'main' content area. -->
-
+    <main>
         <!-- Section 1: Resource Information -->
         <!-- TODO: Use an 'article' to display the main resource information. -->
+        <article> 
             <!-- TODO: Add a paragraph ('p') for the resource description (use dummy text). -->
+            <p id="resource-description">
+                This resource introduces the basic structure of an HTML document and provides examples of commonly used tags.
+            </p>
             <!-- TODO: Add an anchor tag ('a') that links to the actual resource URL (use a dummy link like "https://example.com").
                  - Text should be "Access Resource Material".
                  - Consider adding 'target="_blank"' to open it in a new tab. -->
+            <p>
+                <a id="resource-link" href="#" target="_blank">Access Resource Material</a>
+            </p>
+        </article>
         <!-- End of article. -->
 
         <!-- Section 2: Discussion Forum -->
         <!-- TODO: Create a 'section' for the discussion, with an 'id' of "discussion-forum". -->
+         <section id="discussion-forum">
             <!-- TODO: Add a sub-heading ('h2') "Discussion". -->
+            <h2>Discussion</h2>
 
             <!-- Subsection 2.1: Existing Comments -->
             <!-- TODO: Add a container (like a 'div') for the list of comments. -->
+            <div id="comment-list">
                 <!-- TODO: Add 1-2 dummy comments to show the structure. -->
+                 <!-- Example Comment 1 -->
+                <article class="comment">
+                    <p>This was very helpful, thanks!</p>
+                    <footer>Posted by: Jane Doe</footer>
+                </article>
 
-                <!-- Example Comment 1: -->
-                <!-- TODO: Use an 'article' for each comment. -->
-                    <!-- TODO: Use a 'p' for the comment text (e.g., "This was very helpful, thanks!"). -->
-                    <!-- TODO: Use a 'footer' to show the author (e.g., "Posted by: Jane Doe"). -->
-                <!-- End of comment article. -->
+                <!-- Example Comment 2 -->
+                <article class="comment">
+                    <p>I still don’t understand the difference between &lt;div&gt; and &lt;section&gt;. Can someone explain?</p>
+                    <footer>Posted by: Student A</footer>
+                </article>
 
-                <!-- Example Comment 2: -->
-                <!-- TODO: Create another 'article' for a second comment. -->
+            </div>
             <!-- End of comment list container. -->
 
             <!-- Subsection 2.2: Add a Comment Form -->
             <!-- TODO: Create a 'form' for users to post new comments. Action can be '#'. -->
+            <form id="comment-form" action="#">
                 <!-- TODO: Use a 'fieldset' to group the controls. -->
+                <fieldset>
                     <!-- TODO: Add a 'legend', e.g., "Leave a Comment". -->
+                <legend>Leave a Comment</legend>
 
                     <!-- TODO: Add a 'label' and 'textarea' for the comment box.
                          - label 'for': "new-comment"
                          - textarea 'id': "new-comment", required -->
-                    
+                    <label for="new-comment">Your Comment:</label>
+                    <textarea id="new-comment"required></textarea>
                     <!-- TODO: Add a 'button' to submit the comment.
                          - type="submit", Text: "Post Comment" -->
+                    <button type="submit">Post Comment</button>
+                </fieldset>
                 <!-- End of fieldset. -->
+            </form>
             <!-- End of form. -->
+        </section>
         <!-- End of discussion section. -->
-
+    </main>
     <!-- End of main. -->
+    <script src="details.js" defer></script>
 </body>
 </html>
