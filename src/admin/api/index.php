@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // TODO: Include the database connection class
 // Assume the Database class has a method getConnection() that returns a PDO instance
-require_once __DIR__ . '/../../../db.php';
+require __DIR__ . '/../../../db.php';
 // TODO: Get the PDO database connection
 $db = getDBConnection();
 
@@ -571,8 +571,8 @@ try {
     http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Database error"
-    ]);
+        "message" => "Database connection failed: " . $e->getMessage() // Show specific message  
+          ]);
     
 } catch (Exception $e) {
     // TODO: Handle general errors
