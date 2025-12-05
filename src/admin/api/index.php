@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // TODO: Include the database connection class
 // Assume the Database class has a method getConnection() that returns a PDO instance
-require __DIR__ . '/../../../db.php';
+require __DIR__ . '/../../db.php';
 // TODO: Get the PDO database connection
 $db = getDBConnection();
 
