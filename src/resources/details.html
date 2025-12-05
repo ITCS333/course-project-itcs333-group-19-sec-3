@@ -123,7 +123,7 @@
 <body>
     <!-- TODO: Create a 'header' with a main heading ('h1'). You can use a dummy title like "Chapter 1 Notes". -->
     <header>
-        <h1>Chapter 1 Notes</h1>
+        <h1 id="resource-title">Chapter 1 Notes</h1>
     </header>
 
     <!-- TODO: Create the 'main' content area. -->
@@ -132,14 +132,14 @@
         <!-- TODO: Use an 'article' to display the main resource information. -->
         <article> 
             <!-- TODO: Add a paragraph ('p') for the resource description (use dummy text). -->
-            <p>
+            <p id="resource-description">
                 This resource introduces the basic structure of an HTML document and provides examples of commonly used tags.
             </p>
             <!-- TODO: Add an anchor tag ('a') that links to the actual resource URL (use a dummy link like "https://example.com").
                  - Text should be "Access Resource Material".
                  - Consider adding 'target="_blank"' to open it in a new tab. -->
             <p>
-                <a href="https://example.com" target="_blank">Access Resource Material</a>
+                <a id="resource-link" href="#" target="_blank">Access Resource Material</a>
             </p>
         </article>
         <!-- End of article. -->
@@ -171,7 +171,7 @@
 
             <!-- Subsection 2.2: Add a Comment Form -->
             <!-- TODO: Create a 'form' for users to post new comments. Action can be '#'. -->
-            <form action="#"></form>
+            <form id="comment-form" action="#">
                 <!-- TODO: Use a 'fieldset' to group the controls. -->
                 <fieldset>
                     <!-- TODO: Add a 'legend', e.g., "Leave a Comment". -->
@@ -193,5 +193,6 @@
         <!-- End of discussion section. -->
     </main>
     <!-- End of main. -->
+    <script src="details.js" defer></script>
 </body>
 </html>
