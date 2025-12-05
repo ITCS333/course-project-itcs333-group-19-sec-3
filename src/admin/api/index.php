@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 /**
  * Student Management API
  * 
@@ -24,6 +27,7 @@
  * Response Format: JSON
  */
 
+
 // TODO: Set headers for JSON response and CORS
 // Set Content-Type to application/json
 // Allow cross-origin requests (CORS) if needed
@@ -47,11 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // TODO: Include the database connection class
 // Assume the Database class has a method getConnection() that returns a PDO instance
-require_once 'Database.php';
-
+require_once __DIR__ . '/../../db.php';
 // TODO: Get the PDO database connection
-$db = new Database();
-$conn = $db->getConnection();
+$db = getDBConnection();
 
 // TODO: Get the HTTP request method
 // Use $_SERVER['REQUEST_METHOD']

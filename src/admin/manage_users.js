@@ -277,13 +277,13 @@ function handleSort(event) {
 async function loadStudentsAndInitialize() {
   // ... your implementation here ...
   try {
-    const response = await fetch("students.json");
+const response = await fetch("./api/index.php");
     if (!response.ok) {
-      console.error("Failed to load students.json");
+console.error("Failed to load students from API");
       return;
     }
     const data = await response.json();
-    students = data;
+    students = data.data || [];
     renderTable(students);
     
     changePasswordForm.addEventListener("submit", handleChangePassword);
