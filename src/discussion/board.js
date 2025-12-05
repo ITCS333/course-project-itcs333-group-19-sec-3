@@ -13,30 +13,22 @@ const topicMessageInput = document.getElementById('topic-message');
 function createTopicArticle(topic) {
     const article = document.createElement('article');
 
-    // Heading with link
     const h3 = document.createElement('h3');
     const a = document.createElement('a');
-    a.href = `topic.html?id=${topic.id}`;
+    a.href = `topic.html?id=${topic.topic_id}`;
     a.textContent = topic.subject;
     h3.appendChild(a);
     article.appendChild(h3);
 
-    // Footer with author and date
     const footer = document.createElement('footer');
-    footer.textContent = `Posted by: ${topic.author} on ${topic.date}`;
+    footer.textContent = `Posted by: ${topic.author} on ${topic.created_at}`;
     article.appendChild(footer);
 
-    // Actions container
     const actions = document.createElement('div');
-    const editBtn = document.createElement('button');
-    editBtn.textContent = 'Edit';
-    // Note: Edit functionality not implemented in this exercise
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('delete-btn');
-    deleteBtn.dataset.id = topic.id;
-
-    actions.appendChild(editBtn);
+    deleteBtn.dataset.id = topic.topic_id;
     actions.appendChild(deleteBtn);
     article.appendChild(actions);
 
@@ -46,58 +38,91 @@ function createTopicArticle(topic) {
 // 2. Render all topics
 function renderTopics() {
     topicListContainer.innerHTML = '';
+    if (topics.length === 0) {
+        topicListContainer.innerHTML = '<p>No topics found.</p>';
+        return;
+    }
     topics.forEach(topic => {
         const article = createTopicArticle(topic);
         topicListContainer.appendChild(article);
     });
 }
 
-// 3. Handle new topic form submission
-function handleCreateTopic(event) {
+// 3. Fetch topics from API
+async function fetchAndRenderTopics() {
+    try {
+        const res = await fetch('/api/discussion.php?resource=topics');
+        const data = await res.json();
+        if(data.success){
+            topics = data.data;
+            renderTopics();
+        } else {
+            topicListContainer.innerHTML = '<p>Failed to load topics.</p>';
+            console.error(data.error);
+        }
+    } catch(err) {
+        console.error(err);
+        topicListContainer.innerHTML = '<p>Error loading topics.</p>';
+    }
+}
+
+// 4. Handle new topic form submission
+async function handleCreateTopic(event) {
     event.preventDefault();
     const subject = topicSubjectInput.value.trim();
     const message = topicMessageInput.value.trim();
+    if(!subject || !message) return;
 
-    if (!subject || !message) return;
-
-    const newTopic = {
-        id: `topic_${Date.now()}`,
+    const payload = {
+        topic_id: `topic_${Date.now()}`, // unique ID
         subject,
         message,
-        author: 'Student', // hardcoded
-        date: new Date().toISOString().split('T')[0]
+        author: 'Student' // لاحقًا يمكن الحصول من $_SESSION
     };
 
-    topics.push(newTopic);
-    renderTopics();
-    newTopicForm.reset();
-}
-
-// 4. Handle delete button clicks
-function handleTopicListClick(event) {
-    if (event.target.classList.contains('delete-btn')) {
-        const id = event.target.dataset.id;
-        topics = topics.filter(t => t.id !== id);
-        renderTopics();
-    }
-}
-
-// 5. Load topics from JSON and initialize
-async function loadAndInitialize() {
     try {
-        const res = await fetch('topics.json');
-        if (!res.ok) throw new Error('Failed to load topics.json');
-        topics = await res.json();
-        renderTopics();
-    } catch (error) {
-        console.error('Error loading topics:', error);
-        topicListContainer.innerHTML = '<p>Failed to load topics.</p>';
+        const res = await fetch('/api/discussion.php?resource=topics', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if(data.success){
+            fetchAndRenderTopics();
+            newTopicForm.reset();
+        } else {
+            alert(data.error);
+        }
+    } catch(err) {
+        console.error(err);
+        alert('Error creating topic.');
     }
+}
 
-    // Event listeners
-    newTopicForm.addEventListener('submit', handleCreateTopic);
-    topicListContainer.addEventListener('click', handleTopicListClick);
+// 5. Handle delete button click
+async function handleTopicListClick(event) {
+    if(event.target.classList.contains('delete-btn')){
+        const id = event.target.dataset.id;
+        try {
+            const res = await fetch(`/api/discussion.php?resource=topics&id=${id}`, {
+                method: 'DELETE'
+            });
+            const data = await res.json();
+            if(data.success){
+                fetchAndRenderTopics();
+            } else {
+                alert(data.error);
+            }
+        } catch(err){
+            console.error(err);
+            alert('Error deleting topic.');
+        }
+    }
 }
 
 // --- Initial Page Load ---
-loadAndInitialize();
+window.addEventListener('DOMContentLoaded', () => {
+    fetchAndRenderTopics();
+    newTopicForm.addEventListener('submit', handleCreateTopic);
+    topicListContainer.addEventListener('click', handleTopicListClick);
+});
