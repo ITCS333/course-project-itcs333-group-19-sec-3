@@ -16,8 +16,9 @@ function getDBConnection() {
         return $pdo;
 
     } catch (PDOException $e) {
-        error_log("DB Connection Error: " . $e->getMessage());
-        return null;
+        http_response_code(500);
+    echo "DB ERROR: " . $e->getMessage();
+    exit;
     }
 }
 ?>
