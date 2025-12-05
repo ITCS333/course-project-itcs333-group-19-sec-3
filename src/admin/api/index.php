@@ -571,8 +571,8 @@ try {
     http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Database error"
-    ]);
+        "message" => "Database connection failed: " . $e->getMessage() // Show specific message  
+          ]);
     
 } catch (Exception $e) {
     // TODO: Handle general errors
