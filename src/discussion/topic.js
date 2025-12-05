@@ -1,11 +1,6 @@
-/*
-  topic.js
-  Populates a single discussion topic page and manages replies
-*/
-
 // --- Global Data Store ---
 let currentTopicId = null;
-let currentReplies = []; // Will hold replies for this topic
+let currentReplies = [];
 
 // --- Element Selections ---
 const topicSubject = document.getElementById('topic-subject');
@@ -17,115 +12,145 @@ const newReplyText = document.getElementById('new-reply');
 
 // --- Functions ---
 
-// Get topic ID from URL query string
 function getTopicIdFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('id');
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
 }
 
-// Render the original topic post
 function renderOriginalPost(topic) {
-  topicSubject.textContent = topic.subject;
-  opMessage.textContent = topic.message;
-  opFooter.textContent = `Posted by: ${topic.author} on ${topic.date}`;
+    topicSubject.textContent = topic.subject;
+    opMessage.textContent = topic.message;
+    opFooter.textContent = `Posted by: ${topic.author} on ${topic.created_at}`;
 }
 
-// Create a single reply <article>
 function createReplyArticle(reply) {
-  const article = document.createElement('article');
+    const article = document.createElement('article');
 
-  const p = document.createElement('p');
-  p.textContent = reply.text;
-  article.appendChild(p);
+    const p = document.createElement('p');
+    p.textContent = reply.text;
+    article.appendChild(p);
 
-  const footer = document.createElement('footer');
-  footer.textContent = `Posted by: ${reply.author} on ${reply.date}`;
-  article.appendChild(footer);
+    const footer = document.createElement('footer');
+    footer.textContent = `Posted by: ${reply.author} on ${reply.created_at}`;
+    article.appendChild(footer);
 
-  const actions = document.createElement('div');
-  const deleteBtn = document.createElement('button');
-  deleteBtn.textContent = 'Delete';
-  deleteBtn.classList.add('delete-reply-btn');
-  deleteBtn.dataset.id = reply.id;
-  actions.appendChild(deleteBtn);
+    const actions = document.createElement('div');
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.classList.add('delete-reply-btn');
+    deleteBtn.dataset.id = reply.reply_id;
+    actions.appendChild(deleteBtn);
+    article.appendChild(actions);
 
-  article.appendChild(actions);
-  return article;
+    return article;
 }
 
-// Render all replies
 function renderReplies() {
-  replyListContainer.innerHTML = '';
-  currentReplies.forEach(reply => {
-    replyListContainer.appendChild(createReplyArticle(reply));
-  });
-}
-
-// Handle adding a new reply
-function handleAddReply(event) {
-  event.preventDefault();
-  const text = newReplyText.value.trim();
-  if (!text) return;
-
-  const newReply = {
-    id: `reply_${Date.now()}`,
-    author: 'Student',
-    date: new Date().toISOString().split('T')[0],
-    text
-  };
-
-  currentReplies.push(newReply);
-  renderReplies();
-  replyForm.reset();
-}
-
-// Handle deleting a reply using event delegation
-function handleReplyListClick(event) {
-  if (event.target.classList.contains('delete-reply-btn')) {
-    const id = event.target.dataset.id;
-    currentReplies = currentReplies.filter(r => r.id !== id);
-    renderReplies();
-  }
-}
-
-// Initialize the page
-async function initializePage() {
-  currentTopicId = getTopicIdFromURL();
-  if (!currentTopicId) {
-    topicSubject.textContent = 'Topic not found.';
-    return;
-  }
-
-  try {
-    const [topicsRes, repliesRes] = await Promise.all([
-      fetch('topics.json'),
-      fetch('replies.json')
-    ]);
-
-    if (!topicsRes.ok || !repliesRes.ok) throw new Error('Failed to load data');
-
-    const topicsData = await topicsRes.json();
-    const repliesData = await repliesRes.json();
-
-    const topic = topicsData.find(t => t.id === currentTopicId);
-    if (!topic) {
-      topicSubject.textContent = 'Topic not found.';
-      return;
+    replyListContainer.innerHTML = '';
+    if(currentReplies.length === 0){
+        replyListContainer.innerHTML = '<p>No replies yet.</p>';
+        return;
     }
+    currentReplies.forEach(reply => {
+        replyListContainer.appendChild(createReplyArticle(reply));
+    });
+}
 
-    currentReplies = repliesData[currentTopicId] || [];
+// Fetch topic from API
+async function fetchTopic() {
+    try {
+        const res = await fetch(`/api/discussion.php?resource=topics&id=${currentTopicId}`);
+        const data = await res.json();
+        if(data.success){
+            renderOriginalPost(data.data);
+        } else {
+            topicSubject.textContent = 'Topic not found.';
+        }
+    } catch(err){
+        console.error(err);
+        topicSubject.textContent = 'Error loading topic.';
+    }
+}
 
-    renderOriginalPost(topic);
-    renderReplies();
+// Fetch replies from API
+async function fetchReplies() {
+    try {
+        const res = await fetch(`/api/discussion.php?resource=replies&topic_id=${currentTopicId}`);
+        const data = await res.json();
+        if(data.success){
+            currentReplies = data.data;
+            renderReplies();
+        } else {
+            replyListContainer.innerHTML = '<p>No replies found.</p>';
+        }
+    } catch(err){
+        console.error(err);
+        replyListContainer.innerHTML = '<p>Error loading replies.</p>';
+    }
+}
 
-    replyForm.addEventListener('submit', handleAddReply);
-    replyListContainer.addEventListener('click', handleReplyListClick);
+// Add new reply
+async function handleAddReply(event){
+    event.preventDefault();
+    const text = newReplyText.value.trim();
+    if(!text) return;
 
-  } catch (error) {
-    console.error('Error loading topic page:', error);
-    topicSubject.textContent = 'Failed to load topic.';
-  }
+    const payload = {
+        reply_id: `reply_${Date.now()}`,
+        topic_id: currentTopicId,
+        text,
+        author: 'Student' // لاحقًا يمكن الحصول من $_SESSION
+    };
+
+    try{
+        const res = await fetch('/api/discussion.php?resource=replies', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if(data.success){
+            fetchReplies();
+            replyForm.reset();
+        } else {
+            alert(data.error);
+        }
+    } catch(err){
+        console.error(err);
+        alert('Error posting reply.');
+    }
+}
+
+// Delete a reply
+async function handleReplyListClick(event){
+    if(event.target.classList.contains('delete-reply-btn')){
+        const replyId = event.target.dataset.id;
+        try{
+            const res = await fetch(`/api/discussion.php?resource=replies&id=${replyId}`, {
+                method: 'DELETE'
+            });
+            const data = await res.json();
+            if(data.success){
+                fetchReplies();
+            } else {
+                alert(data.error);
+            }
+        } catch(err){
+            console.error(err);
+            alert('Error deleting reply.');
+        }
+    }
 }
 
 // --- Initial Page Load ---
-initializePage();
+window.addEventListener('DOMContentLoaded', () => {
+    currentTopicId = getTopicIdFromURL();
+    if(!currentTopicId){
+        topicSubject.textContent = 'Topic not found.';
+        return;
+    }
+    fetchTopic();
+    fetchReplies();
+    replyForm.addEventListener('submit', handleAddReply);
+    replyListContainer.addEventListener('click', handleReplyListClick);
+});
