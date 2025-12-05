@@ -2,10 +2,10 @@
 session_start();
 
 // ------------------------------
-// Simulated User Session (replace with real auth in production)
+// User session
 // ------------------------------
-$currentUser = $_SESSION['username'] ?? 'TestUser'; // مؤقت لاختبار
-$currentUserRole = $_SESSION['role'] ?? 'student'; // مؤقت
+$currentUser = $_SESSION['username'] ?? null;
+$currentUserRole = $_SESSION['role'] ?? null; // 'student', 'teacher', 'admin'
 
 // ------------------------------
 // Headers
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // ------------------------------
-// Database Connection
+// Database
 // ------------------------------
 require_once __DIR__ . '/Database.php';
 $database = new Database();
@@ -63,25 +63,21 @@ function getAllTopics($db) {
 }
 
 function createTopic($db, $data, $currentUser) {
-    $author = $currentUser ?? ($data['author'] ?? 'TestUser');
+    if (!$currentUser) sendResponse(['success'=>false,'error'=>'Unauthorized'],401);
+
     $subject = trim($data['subject'] ?? '');
     $message = trim($data['message'] ?? '');
-
-    if ($subject === '' || $message === '') sendResponse(['success'=>false,'error'=>'subject and message are required'],400);
-
-    $subject_s = sanitizeInput($subject);
-    $message_s = sanitizeInput($message);
-    $author_s = sanitizeInput($author);
+    if ($subject === '' || $message === '') sendResponse(['success'=>false,'error'=>'subject and message required'],400);
 
     $stmt = $db->prepare("INSERT INTO topics (subject, message, author) VALUES (:sub, :msg, :auth)");
-    $stmt->bindParam(':sub',$subject_s);
-    $stmt->bindParam(':msg',$message_s);
-    $stmt->bindParam(':auth',$author_s);
+    $stmt->bindParam(':sub', sanitizeInput($subject));
+    $stmt->bindParam(':msg', sanitizeInput($message));
+    $stmt->bindParam(':auth', sanitizeInput($currentUser));
 
     if ($stmt->execute()) {
-        $newId = (int)$db->lastInsertId();
-        $stmt2 = $db->prepare("SELECT id, subject, message, author, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') as created_at FROM topics WHERE id = :id LIMIT 1");
-        $stmt2->bindParam(':id',$newId,PDO::PARAM_INT);
+        $id = $db->lastInsertId();
+        $stmt2 = $db->prepare("SELECT id, subject, message, author, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') as created_at FROM topics WHERE id=:id");
+        $stmt2->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt2->execute();
         $topic = $stmt2->fetch(PDO::FETCH_ASSOC);
         sendResponse(['success'=>true,'data'=>$topic],201);
@@ -90,22 +86,76 @@ function createTopic($db, $data, $currentUser) {
     }
 }
 
+function updateTopic($db, $data, $currentUser, $currentUserRole) {
+    $id = (int)($data['id'] ?? 0);
+    if ($id <= 0) sendResponse(['success'=>false,'error'=>'Topic ID required'],400);
+    if (!$currentUser) sendResponse(['success'=>false,'error'=>'Unauthorized'],401);
+
+    // Fetch author
+    $stmt = $db->prepare("SELECT author FROM topics WHERE id=:id");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $topic = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$topic) sendResponse(['success'=>false,'error'=>'Topic not found'],404);
+
+    $author = $topic['author'];
+    $isTeacher = ($currentUserRole === 'teacher' || $currentUserRole === 'admin');
+    if (($currentUser !== $author) && !$isTeacher) sendResponse(['success'=>false,'error'=>'Permission denied'],403);
+
+    $fields = [];
+    $params = [':id'=>$id];
+
+    if(isset($data['subject'])){
+        $fields[] = 'subject=:sub';
+        $params[':sub'] = sanitizeInput($data['subject']);
+    }
+    if(isset($data['message'])){
+        $fields[] = 'message=:msg';
+        $params[':msg'] = sanitizeInput($data['message']);
+    }
+    if(empty($fields)) sendResponse(['success'=>false,'error'=>'Nothing to update'],400);
+
+    $sql = "UPDATE topics SET ".implode(', ',$fields)." WHERE id=:id";
+    $stmt = $db->prepare($sql);
+    foreach($params as $k=>$v) $stmt->bindValue($k,$v);
+    if($stmt->execute()) sendResponse(['success'=>true,'message'=>'Topic updated']);
+    else sendResponse(['success'=>false,'error'=>'Failed to update topic'],500);
+}
+
+function deleteTopic($db, $id, $currentUser, $currentUserRole) {
+    if (!$id) sendResponse(['success'=>false,'error'=>'Topic ID required'],400);
+    if (!$currentUser) sendResponse(['success'=>false,'error'=>'Unauthorized'],401);
+
+    $stmt = $db->prepare("SELECT author FROM topics WHERE id=:id");
+    $stmt->bindParam(':id',$id,PDO::PARAM_INT);
+    $stmt->execute();
+    $topic = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$topic) sendResponse(['success'=>false,'error'=>'Topic not found'],404);
+
+    $author = $topic['author'];
+    $isTeacher = ($currentUserRole === 'teacher' || $currentUserRole === 'admin');
+    if (($currentUser !== $author) && !$isTeacher) sendResponse(['success'=>false,'error'=>'Permission denied'],403);
+
+    $stmt = $db->prepare("DELETE FROM topics WHERE id=:id");
+    $stmt->bindParam(':id',$id,PDO::PARAM_INT);
+    if($stmt->execute()) sendResponse(['success'=>true,'message'=>'Topic deleted']);
+    else sendResponse(['success'=>false,'error'=>'Failed to delete topic'],500);
+}
+
 // ------------------------------
 // Router
 // ------------------------------
 $method = $_SERVER['REQUEST_METHOD'];
 $payload = getJsonPayload();
+$id = isset($_GET['id']) ? (int)$_GET['id'] : ($payload['id'] ?? 0);
 
 try {
-    switch($method) {
-        case 'GET':
-            getAllTopics($db);
-            break;
-        case 'POST':
-            createTopic($db, $payload, $currentUser);
-            break;
-        default:
-            sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
+    switch($method){
+        case 'GET': getAllTopics($db); break;
+        case 'POST': createTopic($db,$payload,$currentUser); break;
+        case 'PUT': updateTopic($db,$payload,$currentUser,$currentUserRole); break;
+        case 'DELETE': deleteTopic($db,$id,$currentUser,$currentUserRole); break;
+        default: sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
     }
 } catch(PDOException $e){
     sendResponse(['success'=>false,'error'=>$e->getMessage()],500);
