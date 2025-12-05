@@ -15,6 +15,10 @@
 // TODO: Select the section for the assignment list ('#assignment-list-section').
 const listSection = document.querySelector('#assignment-list-section');
 
+
+// Define the API base URL
+const API_URL = 'index.php?resource=assignments';
+
 // --- Functions ---
 
 /**
@@ -56,7 +60,7 @@ function createAssignmentArticle(assignment) {
 async function loadAssignments() {
   try {
         // 1. Use fetch() to get data from 'assignments.json'.
-        const response = await fetch('assignments.json');
+        const response = await fetch(API_URL);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
