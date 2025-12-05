@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 /**
  * Student Management API
  * 
@@ -51,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // TODO: Include the database connection class
 // Assume the Database class has a method getConnection() that returns a PDO instance
-require_once __DIR__ . '/../../db.php';
+require_once __DIR__ . '/../../../db.php';
 // TODO: Get the PDO database connection
 $db = getDBConnection();
 
