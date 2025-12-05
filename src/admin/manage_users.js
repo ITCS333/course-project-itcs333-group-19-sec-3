@@ -87,10 +87,10 @@ function createStudentRow(student) {
  */
 function renderTable(studentArray) {
   // ... your implementation here ...
-    studentTableBody.innerHTML = "";
+    tbody.innerHTML = "";
   studentArray.forEach(student => {
         const tr = createStudentRow(student);
-        studentTableBody.appendChild(tr);
+        tbody.appendChild(tr);
       });
 }
 
@@ -183,8 +183,8 @@ function handleTableClick(event) {
   // ... your implementation here ...
   const target = event.target;
    if (target.classList.contains("delete-btn")) {
-        const studentId = target.dataset.id;
-        students = students.filter(student => student.id !== studentId);
+        const studentId = Number(target.dataset.id);  
+        students = students.filter(student => Number(student.id) !== studentId);
         renderTable(students);
    }
 }
@@ -234,9 +234,9 @@ function handleSort(event) {
   const colIndex = th.cellIndex;
   let sortKey = "";
   if (colIndex === 0) 
-    sortKey = "id";
-  if (colIndex === 1) 
     sortKey = "name";
+  if (colIndex === 1) 
+    sortKey = "id";
   if (colIndex === 2) 
     sortKey = "email";
 
@@ -245,15 +245,12 @@ function handleSort(event) {
   th.dataset.sortDir = newDir;
 
   students.sort((a, b) => {
-    let valA = a[sortKey];
-    let valB = b[sortKey];
-
     if (sortKey === "id") {
-      return newDir === "asc" ? (valA - valB) : (valB - valA);
+      return newDir === "asc" ? (a.id - b.id) : (b.id - a.id);
     }
     return newDir === "asc"
-      ? valA.localeCompare(valB)
-      : valB.localeCompare(valA);
+      ? a[sortKey].localeCompare(b[sortKey])
+      : b[sortKey].localeCompare(a[sortKey]);
   });
   renderTable(students);
 }
@@ -286,9 +283,9 @@ console.error("Failed to load students from API");
     students = data.data || [];
     renderTable(students);
     
-    changePasswordForm.addEventListener("submit", handleChangePassword);
+    passwordForm.addEventListener("submit", handleChangePassword);
     addStudentForm.addEventListener("submit", handleAddStudent);
-    studentTableBody.addEventListener("click", handleTableClick);
+    tbody.addEventListener("click", handleTableClick);
     searchInput.addEventListener("input", handleSearch);
     tableHeaders.forEach(th => {
       th.addEventListener("click", handleSort);
