@@ -4,7 +4,7 @@ session_start();
 // ==============================
 // Simulated User Session
 // ==============================
-$currentUser = $_SESSION['username'] ?? null;
+$currentUser = $_SESSION['username'] ?? 'student1';
 $currentUserRole = $_SESSION['role'] ?? 'student'; // 'student' or 'teacher'
 
 // ==============================
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // ==============================
 // Include Database Connection
 // ==============================
-require_once 'Database.php'; // Assume this returns PDO instance
+require_once 'Database.php';
 $database = new Database();
 $db = $database->getConnection();
 
@@ -55,10 +55,8 @@ function isValidResource($resource) {
 }
 
 // ==============================
-// ==============================
 // TOPICS FUNCTIONS
 // ==============================
-
 function getAllTopics($db) {
     $search = $_GET['search'] ?? '';
     $sort = $_GET['sort'] ?? 'created_at';
@@ -130,14 +128,12 @@ function updateTopic($db, $data, $currentUser, $currentUserRole) {
     if (!$currentUser) sendResponse(['error'=>'Unauthorized'],401);
     if (empty($data['topic_id'])) sendResponse(['error'=>'topic_id required'],400);
 
-    // Check topic exists
     $stmt = $db->prepare("SELECT author FROM topics WHERE topic_id = :tid");
     $stmt->bindParam(':tid', $data['topic_id']);
     $stmt->execute();
     $topic = $stmt->fetch(PDO::FETCH_ASSOC);
     if(!$topic) sendResponse(['error'=>'Topic not found'],404);
 
-    // Ownership check
     if($topic['author'] !== $currentUser && $currentUserRole !== 'teacher'){
         sendResponse(['error'=>'Permission denied'],403);
     }
@@ -170,24 +166,20 @@ function deleteTopic($db, $topicId, $currentUser, $currentUserRole) {
     if (!$currentUser) sendResponse(['error'=>'Unauthorized'],401);
     if (!$topicId) sendResponse(['error'=>'Topic ID required'],400);
 
-    // Check topic exists
     $stmt = $db->prepare("SELECT author FROM topics WHERE topic_id = :tid");
     $stmt->bindParam(':tid',$topicId);
     $stmt->execute();
     $topic = $stmt->fetch(PDO::FETCH_ASSOC);
     if(!$topic) sendResponse(['error'=>'Topic not found'],404);
 
-    // Ownership check
     if($topic['author'] !== $currentUser && $currentUserRole !== 'teacher'){
         sendResponse(['error'=>'Permission denied'],403);
     }
 
-    // Delete replies first
     $stmt = $db->prepare("DELETE FROM replies WHERE topic_id=:tid");
     $stmt->bindParam(':tid',$topicId);
     $stmt->execute();
 
-    // Delete topic
     $stmt = $db->prepare("DELETE FROM topics WHERE topic_id=:tid");
     $stmt->bindParam(':tid',$topicId);
     if($stmt->execute()){
@@ -200,7 +192,6 @@ function deleteTopic($db, $topicId, $currentUser, $currentUserRole) {
 // ==============================
 // REPLIES FUNCTIONS
 // ==============================
-
 function getRepliesByTopicId($db, $topicId) {
     if(!$topicId) sendResponse(['error'=>'Topic ID required'],400);
     $stmt = $db->prepare("SELECT reply_id, topic_id, text, author, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') as created_at FROM replies WHERE topic_id=:tid ORDER BY created_at ASC");
@@ -223,7 +214,6 @@ function createReply($db, $data, $currentUser) {
     $author = $currentUser;
     $reply_id = 'reply_'.time().rand(1000,9999);
 
-    // Check topic exists
     $stmt = $db->prepare("SELECT topic_id FROM topics WHERE topic_id=:tid");
     $stmt->bindParam(':tid',$topicId);
     $stmt->execute();
@@ -252,7 +242,6 @@ function deleteReply($db, $replyId, $currentUser, $currentUserRole) {
     $reply = $stmt->fetch(PDO::FETCH_ASSOC);
     if(!$reply) sendResponse(['error'=>'Reply not found'],404);
 
-    // Ownership check
     if($reply['author'] !== $currentUser && $currentUserRole !== 'teacher'){
         sendResponse(['error'=>'Permission denied'],403);
     }
@@ -317,5 +306,4 @@ try {
 } catch(Exception $e){
     sendResponse(['error'=>'Server error'],500);
 }
-
 ?>
