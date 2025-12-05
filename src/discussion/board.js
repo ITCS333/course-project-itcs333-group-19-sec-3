@@ -15,7 +15,7 @@ function createTopicArticle(topic) {
 
     const h3 = document.createElement('h3');
     const a = document.createElement('a');
-    a.href = `topic.html?id=${topic.topic_id}`;
+    a.href = `topic.html?id=${topic.id}`;
     a.textContent = topic.subject;
     h3.appendChild(a);
     article.appendChild(h3);
@@ -28,7 +28,7 @@ function createTopicArticle(topic) {
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('delete-btn');
-    deleteBtn.dataset.id = topic.topic_id;
+    deleteBtn.dataset.id = topic.id;
     actions.appendChild(deleteBtn);
     article.appendChild(actions);
 
@@ -74,10 +74,9 @@ async function handleCreateTopic(event) {
     if(!subject || !message) return;
 
     const payload = {
-        topic_id: `topic_${Date.now()}`, // unique ID
         subject,
         message,
-        author: 'Student' // لاحقًا يمكن الحصول من $_SESSION
+        // author: 'Student' // optional for testing; server prefers session username
     };
 
     try {
@@ -88,10 +87,11 @@ async function handleCreateTopic(event) {
         });
         const data = await res.json();
         if(data.success){
+            // server returns the created topic in data.data
             fetchAndRenderTopics();
             newTopicForm.reset();
         } else {
-            alert(data.error);
+            alert(data.error || 'Failed to create topic.');
         }
     } catch(err) {
         console.error(err);
@@ -103,6 +103,7 @@ async function handleCreateTopic(event) {
 async function handleTopicListClick(event) {
     if(event.target.classList.contains('delete-btn')){
         const id = event.target.dataset.id;
+        if(!confirm('Are you sure you want to delete this topic?')) return;
         try {
             const res = await fetch(`/api/discussion.php?resource=topics&id=${id}`, {
                 method: 'DELETE'
@@ -111,7 +112,7 @@ async function handleTopicListClick(event) {
             if(data.success){
                 fetchAndRenderTopics();
             } else {
-                alert(data.error);
+                alert(data.error || 'Failed to delete topic.');
             }
         } catch(err){
             console.error(err);
