@@ -4,8 +4,8 @@ let topics = [];
 // --- Element Selections ---
 const newTopicForm = document.getElementById('new-topic-form');
 const topicListContainer = document.getElementById('topic-list-container');
-const topicSubjectInput = document.getElementById('topic-subject-input');
-const topicMessageInput = document.getElementById('topic-message-input');
+const topicSubjectInput = document.getElementById('topic-subject');
+const topicMessageInput = document.getElementById('topic-message');
 
 // --- Functions ---
 
