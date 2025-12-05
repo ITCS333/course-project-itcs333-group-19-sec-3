@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 /**
  * Student Management API
  * 
@@ -23,9 +26,6 @@
  * 
  * Response Format: JSON
  */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 
 // TODO: Set headers for JSON response and CORS
