@@ -18,8 +18,10 @@
      <title> Manage Assignments</title>
 
     <!-- TODO: Link to your CSS framework or stylesheet. -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
      <link rel="stylesheet" href="styles.css">
      <script src="admin.js" defer></script>
+     
 </head>
 <body>
 
@@ -48,7 +50,7 @@
                          - label 'for': "assignment-title"
                          - input 'id': "assignment-title", type="text", required -->
                          <label for="assignment-title"> Assignment Title:</label>
-                         <input id="assignemnt-title" type="text" required>
+                         <input id="assignment-title" type="text" required>
 
                     <!-- TODO: Add a 'label' and 'textarea' for the description.
                          - label 'for': "assignment-description"
@@ -60,13 +62,13 @@
                          - label 'for': "assignment-due-date"
                          - input 'id': "assignment-due-date", type="date", required -->
                          <label for="assignment-due-date">Due Date:</label>
-                         <input id="assignment-due-date" rows="5" required>
+                         <input id="assignment-due-date" type="date" required>
 
                     <!-- TODO: Add a 'label' and 'textarea' for attached files or links (one per line).
                          - label 'for': "assignment-files"
                          - textarea 'id': "assignment-files", rows="3" -->
                          <label for="assignment-files"> Attached Files/Links </label>
-                         <textarea id="assignment-files" rows="5" required></textarea>
+                         <textarea id="assignment-files" rows="3"></textarea>
 
 
                     <!-- TODO: Add a 'button' to submit the form.

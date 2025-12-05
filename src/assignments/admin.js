@@ -22,6 +22,9 @@ const assignmentForm= document.querySelector("#assignment-form");
 // TODO: Select the assignments table body ('#assignments-tbody').
 const assignmentTbody=document.querySelector("#assignments-tbody");
 
+//Define API URL
+const API_URL = 'index.php?resource=assignments';
+
 // --- Functions ---
 
 /**
@@ -82,7 +85,7 @@ function renderTable() {
   assignmentTbody.innerHTML="";
   assignments.forEach(assignment=>{
     const row=createAssignmentRow(assignment);
-    assignmentsTbody.appendchild(row);
+    assignmentsTbody.appendChild(row);
   });
 }
 
@@ -97,24 +100,58 @@ function renderTable() {
  * 5. Call `renderTable()` to refresh the list.
  * 6. Reset the form.
  */
-function handleAddAssignment(event) {
+async function handleAddAssignment(event) {
   // ... your implementation here ...
   event.preventDefault();
 
   const title=document.querySelector("#assignment-title").value.trim();
   const description=document.querySelector("#assignment-description").value.trim();
   const dueDate=document.querySelector("#assignment-due-date").value;
-  const files = document.querySelector("#assignment-files").value.trim();
+  const filesInput = document.querySelector("#assignment-files").value.trim();
+
+  const files = filesInput.split('\n').map(f => f.trim()).filter(f => f.length > 0);
 
   const newAssignment={
     id: `asg_${Date.now()}`,
-    title, description, dueDate, files
+    title, 
+    description, 
+    due_date: dueDate, 
+    files
   };
 
   assignments.push(newAssignment);
   renderTable();
   event.target.reset();
 
+  try {
+        // 1. Send data to the PHP API using POST
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newAssignment)
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok) {
+            console.error("Failed to add assignment:", result.error);
+            alert(`Error adding assignment: ${result.error || 'Unknown error'}`);
+            return;
+        }
+
+        // 2. Add the created assignment object (which includes the new DB ID) to the global array
+        assignments.push(result);
+        
+        // 3. Refresh the table and reset the form
+        renderTable();
+        event.target.reset();
+
+    } catch (error) {
+        console.error("Network or submission error:", error);
+        alert("A network error occurred while submitting the assignment.");
+    }
 }
 
 /**
@@ -127,14 +164,39 @@ function handleAddAssignment(event) {
  * with the matching ID (in-memory only).
  * 4. Call `renderTable()` to refresh the list.
  */
-function handleTableClick(event) {
+async function handleTableClick(event) {
   // ... your implementation here ...
   if(event.target.classList.contains("delete-btn")){
     const id=event.target.dataset.id;
+  
+    if (!confirm(`Are you sure you want to delete assignment ID: ${id}?`)) {
+            return;
+        }
+
+    try {
+            // Send DELETE request (using POST with a method override or actual DELETE)
+            // Using DELETE method is the standard REST approach
+            const response = await fetch(`${API_URL}&id=${id}`, {
+                method: 'DELETE'
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error("Failed to delete assignment:", result.error);
+                alert(`Error deleting assignment: ${result.error || 'Unknown error'}`);
+                return;
+            }
+
     assignments=assignments.filter(asg=> asg.id!=id);
 
     renderTable();
   }
+  catch (error) {
+            console.error("Network error during deletion:", error);
+            alert("A network error occurred while trying to delete the assignment.");
+        }
+    }
 }
 
 /**
@@ -150,14 +212,18 @@ function handleTableClick(event) {
 async function loadAndInitialize() {
   // ... your implementation here ...
   try{
-    const response=await fetch("assignments.json");
+    const response=await fetch(API_URL);
+    if(!response.ok){
+      throw new error(`HTTP error! status: ${response.status}`);
+    }
+
     const data=await response.json();
-    assignment=data;
+    assignments=data; //updating global assignment store
 
     renderTable();
 
     assignmentForm.addEventListener("submit", handleAddAssignment);
-    assignmentForm.addEventListener("click", handleAddAssignment);
+    assignmentTbody.addEventListener("click", handleTableClick);
 
   }
   catch(error){
