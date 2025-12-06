@@ -121,7 +121,11 @@ try {
 
     if (data.success) {
       displayMessage("Login successful!", "success");
-
+     if (data.user.is_admin == 1) {
+    window.location.href = "../admin/manage_users.html";
+    } else {
+    window.location.href = "../index.html";
+  }
   
 
     } else {
