@@ -94,14 +94,14 @@ try {
     // IMPORTANT: Use a placeholder (? or :email) for the email value
     // This prevents SQL injection attacks
     $sql = "SELECT id, name, email, password 
-        FROM students 
+        FROM users 
         WHERE email = :email";
 
     // --- Prepare the Statement ---
     // TODO: Prepare the SQL statement using the PDO prepare method
     // Store the result in a variable
     // Prepared statements protect against SQL injection
-    $stmt = $db->prepare("SELECT id, name, email, password FROM students WHERE email = :email");
+    $stmt = $db->prepare("SELECT id, name, email, password FROM users WHERE email = :email");
 
     // --- Execute the Query ---
     // TODO: Execute the prepared statement with the email parameter
