@@ -82,7 +82,7 @@ if (strlen($password) < 8) {
 // Assume getDBConnection() returns a PDO instance with error mode set to exception
 // The function is defined elsewhere (e.g., in a config file or db.php)
 
-require_once '/../../db.php';
+require __DIR__ '/../../db.php';
 $db = getDBConnection();
 // TODO: Wrap database operations in a try-catch block to handle PDO exceptions
 // This ensures you can return a proper JSON error response if something goes wrong
@@ -93,7 +93,7 @@ try {
     // Use a WHERE clause to filter by email
     // IMPORTANT: Use a placeholder (? or :email) for the email value
     // This prevents SQL injection attacks
-    $sql = "SELECT id, name, email, password 
+    $sql = "SELECT id, name, email, password, is_admin 
         FROM users 
         WHERE email = :email";
 
@@ -101,7 +101,7 @@ try {
     // TODO: Prepare the SQL statement using the PDO prepare method
     // Store the result in a variable
     // Prepared statements protect against SQL injection
-    $stmt = $db->prepare("SELECT id, name, email, password FROM users WHERE email = :email");
+    $stmt = $db->prepare("SELECT id, name, email, password, is_admin FROM users WHERE email = :email");
 
     // --- Execute the Query ---
     // TODO: Execute the prepared statement with the email parameter

@@ -122,9 +122,7 @@ try {
     if (data.success) {
       displayMessage("Login successful!", "success");
 
-      setTimeout(() => {
-        window.location.href = "../../admin/index.html";
-      }, 1000);
+  
 
     } else {
       displayMessage(data.message, "error");
