@@ -10,6 +10,7 @@ const replyListContainer = document.getElementById('reply-list-container');
 const replyForm = document.getElementById('reply-form');
 const newReplyText = document.getElementById('new-reply');
 
+// --- Helpers ---
 function getTopicIdFromURL() {
     const params = new URLSearchParams(window.location.search);
     return params.get('id');
@@ -54,15 +55,19 @@ function renderReplies() {
     });
 }
 
-// Fetch topic from API
+// ------------------------------
+// Fetch topic
+// ------------------------------
 async function fetchTopic() {
     try {
-        const res = await fetch(`/api/discussion.php?resource=topics&id=${currentTopicId}`);
+        const res = await fetch(`/src/discussion/discussion.php?resource=topics&id=${currentTopicId}`);
         const data = await res.json();
-        if(data.success){
+        if(data.success && data.data){
             renderOriginalPost(data.data);
         } else {
             topicSubject.textContent = 'Topic not found.';
+            opMessage.textContent = '';
+            opFooter.textContent = '';
         }
     } catch(err){
         console.error(err);
@@ -70,10 +75,12 @@ async function fetchTopic() {
     }
 }
 
-// Fetch replies from API
+// ------------------------------
+// Fetch replies
+// ------------------------------
 async function fetchReplies() {
     try {
-        const res = await fetch(`/api/discussion.php?resource=replies&topic_id=${currentTopicId}`);
+        const res = await fetch(`/src/discussion/discussion.php?resource=replies&topic_id=${currentTopicId}`);
         const data = await res.json();
         if(data.success){
             currentReplies = data.data;
@@ -87,7 +94,9 @@ async function fetchReplies() {
     }
 }
 
+// ------------------------------
 // Add new reply
+// ------------------------------
 async function handleAddReply(event){
     event.preventDefault();
     const text = newReplyText.value.trim();
@@ -95,12 +104,11 @@ async function handleAddReply(event){
 
     const payload = {
         topic_id: currentTopicId,
-        text,
-        // author: 'Student' // optional
+        text
     };
 
     try{
-        const res = await fetch('/api/discussion.php?resource=replies', {
+        const res = await fetch('/src/discussion/discussion.php?resource=replies', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -118,13 +126,15 @@ async function handleAddReply(event){
     }
 }
 
+// ------------------------------
 // Delete a reply
+// ------------------------------
 async function handleReplyListClick(event){
     if(event.target.classList.contains('delete-reply-btn')){
         const replyId = event.target.dataset.id;
         if(!confirm('Are you sure you want to delete this reply?')) return;
         try{
-            const res = await fetch(`/api/discussion.php?resource=replies&id=${replyId}`, {
+            const res = await fetch(`/src/discussion/discussion.php?resource=replies&id=${replyId}`, {
                 method: 'DELETE'
             });
             const data = await res.json();
@@ -140,11 +150,13 @@ async function handleReplyListClick(event){
     }
 }
 
-// --- Initial Page Load ---
+// --- Initialize Page ---
 window.addEventListener('DOMContentLoaded', () => {
     currentTopicId = getTopicIdFromURL();
     if(!currentTopicId){
         topicSubject.textContent = 'Topic not found.';
+        opMessage.textContent = '';
+        opFooter.textContent = '';
         return;
     }
     fetchTopic();
