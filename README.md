@@ -13,6 +13,6 @@
 | Task 1 | Homepage, Admin Portal and User Management |Latifa Yousif|
 | Task 2 | Course Resources  | Fatema Saleem |
 | Task 3 | Weekly Breakdown | Student 3 |
-| Task 4 | Assignments | Student 4 |
+| Task 4 | Assignments | Fathima Suraya|
 | Task 5 | General Discussion Board | Student 5 |
 ## A link to your live, hosted application on Replit.
