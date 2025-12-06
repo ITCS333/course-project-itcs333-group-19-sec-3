@@ -4,13 +4,13 @@
 
 ## The names and student IDs of all team members.
 - Fatema Saleem Salmeen (ID: 202209302) 
-- Student (ID: xxxxxx) 
+- Latifa Yousif Zubari (ID: 202303352) 
 - Student (ID: xxxxxx) 
 - Student (ID: xxxxxx) 
 ## A table indicating which student was responsible for which task.
 | Task | Description | Owner |
 |------|-------------|-------|
-| Task 1 | Homepage, Admin Portal and User Management | Student 1 |
+| Task 1 | Homepage, Admin Portal and User Management |Latifa Yousif|
 | Task 2 | Course Resources  | Fatema Saleem |
 | Task 3 | Weekly Breakdown | Student 3 |
 | Task 4 | Assignments | Student 4 |
