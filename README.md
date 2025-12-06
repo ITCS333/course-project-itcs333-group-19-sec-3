@@ -3,7 +3,16 @@
 # ITCS### Course Page
 
 ## The names and student IDs of all team members.
-
+- Fatema Saleem Salmeen (ID: 202209302) 
+- Student (ID: xxxxxx) 
+- Student (ID: xxxxxx) 
+- Student (ID: xxxxxx) 
 ## A table indicating which student was responsible for which task.
-
+| Task | Description | Owner |
+|------|-------------|-------|
+| Task 1 | Homepage, Admin Portal and User Management | Student 1 |
+| Task 2 | Course Resources  | Fatema Saleem |
+| Task 3 | Weekly Breakdown | Student 3 |
+| Task 4 | Assignments | Student 4 |
+| Task 5 | General Discussion Board | Student 5 |
 ## A link to your live, hosted application on Replit.
