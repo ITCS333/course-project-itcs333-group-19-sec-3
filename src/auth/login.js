@@ -124,7 +124,7 @@ try {
      if (data.user.is_admin == 1) {
     window.location.href = "/src/admin/manage_users.html";
     } else {
-    window.location.href = "src/index.html";
+    window.location.href = "/index.html";
   }
   
 
