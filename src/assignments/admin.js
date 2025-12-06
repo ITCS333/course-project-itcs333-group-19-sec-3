@@ -85,7 +85,7 @@ function renderTable() {
   assignmentTbody.innerHTML="";
   assignments.forEach(assignment=>{
     const row=createAssignmentRow(assignment);
-    assignmentsTbody.appendChild(row);
+    assignmentTbody.appendChild(row);
   });
 }
 
@@ -136,7 +136,7 @@ async function handleAddAssignment(event) {
         const result = await response.json();
         
         if (!response.ok) {
-            console.error("Failed to add assignment:", result.error);
+            console.rror("Failed to add assignment:", result.error);
             alert(`Error adding assignment: ${result.error || 'Unknown error'}`);
             return;
         }
@@ -214,7 +214,7 @@ async function loadAndInitialize() {
   try{
     const response=await fetch(API_URL);
     if(!response.ok){
-      throw new error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data=await response.json();

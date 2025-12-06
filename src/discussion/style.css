@@ -1,0 +1,156 @@
+/* ===== Reset some defaults ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Body & Layout ===== */
+body {
+    background-color: #f5f6fa;
+    color: #2f3640;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #192a56;
+    font-size: 2rem;
+}
+
+/* ===== Forms ===== */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+form fieldset {
+    border: none;
+}
+
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+form input[type="text"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #dcdde1;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+form input[type="text"]:focus,
+form textarea:focus {
+    border-color: #487eb0;
+    outline: none;
+}
+
+form button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #487eb0;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #40739e;
+}
+
+/* ===== Topics & Replies ===== */
+section h2 {
+    margin-bottom: 15px;
+    color: #192a56;
+    font-size: 1.5rem;
+}
+
+article {
+    background-color: #ffffff;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+article h3 a {
+    text-decoration: none;
+    color: #192a56;
+    font-size: 1.2rem;
+}
+
+article h3 a:hover {
+    color: #40739e;
+}
+
+article footer {
+    font-size: 0.9rem;
+    color: #718093;
+    margin-top: 8px;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.actions button {
+    padding: 5px 12px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.actions button:hover {
+    opacity: 0.85;
+}
+
+.delete-btn, .delete-reply-btn {
+    background-color: #e84118;
+    color: #fff;
+}
+
+.delete-btn:hover, .delete-reply-btn:hover {
+    background-color: #c23616;
+}
+
+.edit-btn {
+    background-color: #00a8ff;
+    color: #fff;
+}
+
+.edit-btn:hover {
+    background-color: #0097e6;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    form, article {
+        padding: 15px;
+    }
+}

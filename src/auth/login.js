@@ -92,7 +92,7 @@ function isValidPassword(password) {
  * - Call `displayMessage("Login successful!", "success")`.
  * - (Optional) Clear the email and password input fields.
  */
-function handleLogin(event) {
+ async function handleLogin(event) {
   // ... your implementation here ...
  event.preventDefault();
 const email = emailInput.value.trim();
@@ -105,9 +105,37 @@ if (!isValidPassword(password)) {
         displayMessage("Password must be at least 8 characters.", "error");
         return;
     }
-displayMessage("Login successful!", "success");
-emailInput.value = "";
-passwordInput.value = "";
+try {
+    const response = await fetch("./api/index.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      displayMessage("Login successful!", "success");
+     if (data.user.is_admin == 1) {
+    window.location.href = "/src/admin/manage_users.html";
+    } else {
+    window.location.href = "/index.html";
+  }
+  
+
+    } else {
+      displayMessage(data.message, "error");
+    }
+
+  } catch (error) {
+    console.error(error);
+    displayMessage("Server error. Please try again.", "error");
+  }
 }
 
 /**
