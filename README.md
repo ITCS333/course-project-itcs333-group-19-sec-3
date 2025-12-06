@@ -3,7 +3,16 @@
 # ITCS### Course Page
 
 ## The names and student IDs of all team members.
-
+- Fatema Saleem Salmeen (ID: 202209302) 
+- Latifa Yousif Zubari (ID: 202303352) 
+- Fathima Suraya Ummer Haji (ID: 202300251) 
+- zainab ali husain (ID: 202306743) 
 ## A table indicating which student was responsible for which task.
-
+| Task | Description | Owner |
+|------|-------------|-------|
+| Task 1 | Homepage, Admin Portal and User Management |Latifa Yousif|
+| Task 2 | Course Resources  | Fatema Saleem |
+| Task 3 | Weekly Breakdown | Student 3 |
+| Task 4 | Assignments | Fathima Suraya|
+| Task 5 | General Discussion Board | Zainab ali  |
 ## A link to your live, hosted application on Replit.
