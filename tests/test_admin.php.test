@@ -1,0 +1,244 @@
+<?php
+use PHPUnit\Framework\TestCase;
+
+class test_admin extends TestCase
+{
+    private static $phpFileContent;
+    
+    private static function remove_comments($string) {
+        $pattern = '/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/';
+        return preg_replace($pattern, '', $string);
+    }
+
+    public static function setUpBeforeClass(): void
+    {
+        // Read the PHP file content
+        $filePath = __DIR__ . '/../src/admin/api/index.php';
+        if (!file_exists($filePath)) {
+            throw new Exception("File not found: {$filePath}");
+        }
+        self::$phpFileContent = self::remove_comments(file_get_contents($filePath));
+    }
+    
+    /**
+     * @group TASK1601
+     */
+    public function testSessionStartExists()
+    {
+        $this->assertStringContainsString(
+            'session_start()',
+            self::$phpFileContent,
+            'session_start() function call should exist in the PHP file'
+        );
+    }
+
+    /**
+     * @group TASK1602
+     */
+    public function testHeaderFunctionExists()
+    {
+        $this->assertStringContainsString(
+            'header(',
+            self::$phpFileContent,
+            'header() function call should exist in the PHP file'
+        );
+    }
+
+    /**
+     * @group TASK1603
+     */
+    public function testJsonHeaderExists()
+    {
+        $this->assertStringContainsString(
+            'application/json',
+            self::$phpFileContent,
+            'Content-Type: application/json should be set in headers'
+        );
+    }
+
+    /**
+     * @group TASK1604
+     */
+    public function testServerSuperglobalExists()
+    {
+        $this->assertStringContainsString(
+            '$_SERVER',
+            self::$phpFileContent,
+            '$_SERVER superglobal should be used to check request method'
+        );
+    }
+
+     /**
+     * @group TASK1605
+     */
+    public function testRequestMethodCheckExists()
+    {
+        $this->assertStringContainsString(
+            'REQUEST_METHOD',
+            self::$phpFileContent,
+            'REQUEST_METHOD should be checked'
+        );
+    }
+
+     /**
+     * @group TASK1606
+     */
+    public function testFileGetContentsExists()
+    {
+        $this->assertStringContainsString(
+            'file_get_contents(',
+            self::$phpFileContent,
+            'file_get_contents() should be used to read request body'
+        );
+    }
+
+     /**
+     * @group TASK1607
+     */
+    public function testPhpInputExists()
+    {
+        $this->assertStringContainsString(
+            'php://input',
+            self::$phpFileContent,
+            'php://input should be used to get raw POST data'
+        );
+    }
+
+     /**
+     * @group TASK1608
+     */
+    public function testJsonDecodeExists()
+    {
+        $this->assertStringContainsString(
+            'json_decode(',
+            self::$phpFileContent,
+            'json_decode() should be used to parse JSON data'
+        );
+    }
+
+     /**
+     * @group TASK1609
+     */
+    public function testFilterVarExists()
+    {
+        $this->assertStringContainsString(
+            'filter_var(',
+            self::$phpFileContent,
+            'filter_var() should be used for server-side validation'
+        );
+    }
+
+     /**
+     * @group TASK1610
+     */
+    public function testFilterValidateEmailExists()
+    {
+        $this->assertStringContainsString(
+            'FILTER_VALIDATE_EMAIL',
+            self::$phpFileContent,
+            'FILTER_VALIDATE_EMAIL should be used for email validation'
+        );
+    }
+
+     /**
+     * @group TASK1611
+     */
+    public function testPdoPrepareExists()
+    {
+        $this->assertStringContainsString(
+            'prepare(',
+            self::$phpFileContent,
+            'PDO prepare() method should be used for prepared statements'
+        );
+    }
+
+     /**
+     * @group TASK1612
+     */
+    public function testPdoExecuteExists()
+    {
+        $this->assertStringContainsString(
+            'execute(',
+            self::$phpFileContent,
+            'PDO execute() method should be called to run prepared statement'
+        );
+    }
+
+     /**
+     * @group TASK1613
+     */
+    public function testPdoFetchExists()
+    {
+        $this->assertStringContainsString(
+            'fetch(',
+            self::$phpFileContent,
+            'PDO fetch() method should be used to get user data'
+        );
+    }
+
+     /**
+     * @group TASK1614
+     */
+    public function testPasswordVerifyExists()
+    {
+        $this->assertStringContainsString(
+            'password_verify(',
+            self::$phpFileContent,
+            'password_verify() should be used to check password'
+        );
+    }
+
+     /**
+     * @group TASK1615
+     */
+    public function testSessionVariableExists()
+    {
+        $this->assertStringContainsString(
+            '$_SESSION',
+            self::$phpFileContent,
+            '$_SESSION should be used to store user data'
+        );
+    }
+
+     /**
+     * @group TASK1616
+     */
+    public function testJsonEncodeExists()
+    {
+        $this->assertStringContainsString(
+            'json_encode(',
+            self::$phpFileContent,
+            'json_encode() should be used to create JSON responses'
+        );
+    }
+
+     /**
+     * @group TASK1617
+     */
+    public function testTryCatchExists()
+    {
+        $this->assertStringContainsString(
+            'try',
+            self::$phpFileContent,
+            'try-catch block should be used for error handling'
+        );
+        
+        $this->assertStringContainsString(
+            'catch',
+            self::$phpFileContent,
+            'catch block should be used to handle exceptions'
+        );
+    }
+
+     /**
+     * @group TASK1618
+     */
+    public function testPdoExceptionExists()
+    {
+        $this->assertStringContainsString(
+            'PDOException',
+            self::$phpFileContent,
+            'PDOException should be caught in catch block'
+        );
+    }
+}

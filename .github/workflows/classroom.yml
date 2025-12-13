@@ -1,0 +1,1505 @@
+name: Autograding Tests
+
+on:
+  - push
+  - repository_dispatch
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Install npm dependencies
+        run: npm install
+
+      # ============================================
+      # HTML STRUCTURE TESTS
+      # ============================================
+      
+      - name: TASK1101
+        id: task1101
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1101
+          setup-command: ''
+          command: npm test -- -t "TASK1101"
+          timeout: 10
+          max-score: 1
+      - name: TASK1102
+        id: task1102
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1102
+          setup-command: ''
+          command: npm test -- -t "TASK1102"
+          timeout: 10
+          max-score: 1
+      - name: TASK1103
+        id: task1103
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1103
+          setup-command: ''
+          command: npm test -- -t "TASK1103"
+          timeout: 10
+          max-score: 1
+      - name: TASK1104
+        id: task1104
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1104
+          setup-command: ''
+          command: npm test -- -t "TASK1104"
+          timeout: 10
+          max-score: 1
+      - name: TASK1105
+        id: task1105
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1105
+          setup-command: ''
+          command: npm test -- -t "TASK1105"
+          timeout: 10
+          max-score: 1
+      - name: TASK1106
+        id: task1106
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1106
+          setup-command: ''
+          command: npm test -- -t "TASK1106"
+          timeout: 10
+          max-score: 1
+      - name: TASK1107
+        id: task1107
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1107
+          setup-command: ''
+          command: npm test -- -t "TASK1107"
+          timeout: 10
+          max-score: 1
+      - name: TASK1108
+        id: task1108
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1108
+          setup-command: ''
+          command: npm test -- -t "TASK1108"
+          timeout: 10
+          max-score: 1
+      - name: TASK1109
+        id: task1109
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1109
+          setup-command: ''
+          command: npm test -- -t "TASK1109"
+          timeout: 10
+          max-score: 1
+      - name: TASK1110
+        id: task1110
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1110
+          setup-command: ''
+          command: npm test -- -t "TASK1110"
+          timeout: 10
+          max-score: 1
+      - name: TASK1401
+        id: task1401
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1401
+          setup-command: ''
+          command: npm test -- -t "TASK1401"
+          timeout: 10
+          max-score: 1
+      - name: TASK1402
+        id: task1402
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1402
+          setup-command: ''
+          command: npm test -- -t "TASK1402"
+          timeout: 10
+          max-score: 1
+      - name: TASK1403
+        id: task1403
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1403
+          setup-command: ''
+          command: npm test -- -t "TASK1403"
+          timeout: 10
+          max-score: 1
+      - name: TASK1404
+        id: task1404
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1404
+          setup-command: ''
+          command: npm test -- -t "TASK1404"
+          timeout: 10
+          max-score: 1
+      - name: TASK1405
+        id: task1405
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1405
+          setup-command: ''
+          command: npm test -- -t "TASK1405"
+          timeout: 10
+          max-score: 1
+      - name: TASK1406
+        id: task1406
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1406
+          setup-command: ''
+          command: npm test -- -t "TASK1406"
+          timeout: 10
+          max-score: 1
+      - name: TASK2101
+        id: task2101
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2101
+          setup-command: ''
+          command: npm test -- -t "TASK2101"
+          timeout: 10
+          max-score: 1
+      - name: TASK2102
+        id: task2102
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2102
+          setup-command: ''
+          command: npm test -- -t "TASK2102"
+          timeout: 10
+          max-score: 1
+      - name: TASK2103
+        id: task2103
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2103
+          setup-command: ''
+          command: npm test -- -t "TASK2103"
+          timeout: 10
+          max-score: 1
+      - name: TASK2104
+        id: task2104
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2104
+          setup-command: ''
+          command: npm test -- -t "TASK2104"
+          timeout: 10
+          max-score: 1
+      - name: TASK2105
+        id: task2105
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2105
+          setup-command: ''
+          command: npm test -- -t "TASK2105"
+          timeout: 10
+          max-score: 1
+      - name: TASK3101
+        id: task3101
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3101
+          setup-command: ''
+          command: npm test -- -t "TASK3101"
+          timeout: 10
+          max-score: 1
+      - name: TASK3102
+        id: task3102
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3102
+          setup-command: ''
+          command: npm test -- -t "TASK3102"
+          timeout: 10
+          max-score: 1
+      - name: TASK3103
+        id: task3103
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3103
+          setup-command: ''
+          command: npm test -- -t "TASK3103"
+          timeout: 10
+          max-score: 1
+      - name: TASK3104
+        id: task3104
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3104
+          setup-command: ''
+          command: npm test -- -t "TASK3104"
+          timeout: 10
+          max-score: 1
+      - name: TASK3105
+        id: task3105
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3105
+          setup-command: ''
+          command: npm test -- -t "TASK3105"
+          timeout: 10
+          max-score: 1
+      - name: TASK4101
+        id: task4101
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4101
+          setup-command: ''
+          command: npm test -- -t "TASK4101"
+          timeout: 10
+          max-score: 1
+      - name: TASK4102
+        id: task4102
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4102
+          setup-command: ''
+          command: npm test -- -t "TASK4102"
+          timeout: 10
+          max-score: 1
+      - name: TASK4103
+        id: task4103
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4103
+          setup-command: ''
+          command: npm test -- -t "TASK4103"
+          timeout: 10
+          max-score: 1
+      - name: TASK4104
+        id: task4104
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4104
+          setup-command: ''
+          command: npm test -- -t "TASK4104"
+          timeout: 10
+          max-score: 1
+      - name: TASK4105
+        id: task4105
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4105
+          setup-command: ''
+          command: npm test -- -t "TASK4105"
+          timeout: 10
+          max-score: 1
+      - name: TASK5101
+        id: task5101
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5101
+          setup-command: ''
+          command: npm test -- -t "TASK5101"
+          timeout: 10
+          max-score: 1
+      - name: TASK5102
+        id: task5102
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5102
+          setup-command: ''
+          command: npm test -- -t "TASK5102"
+          timeout: 10
+          max-score: 1
+      - name: TASK5103
+        id: task5103
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5103
+          setup-command: ''
+          command: npm test -- -t "TASK5103"
+          timeout: 10
+          max-score: 1
+      - name: TASK5104
+        id: task5104
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5104
+          setup-command: ''
+          command: npm test -- -t "TASK5104"
+          timeout: 10
+          max-score: 1
+      - name: TASK5105
+        id: task5105
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5105
+          setup-command: ''
+          command: npm test -- -t "TASK5105"
+          timeout: 10
+          max-score: 1
+
+      # ============================================
+      # JAVASCRIPT TESTS
+      # ============================================
+      
+      - name: TASK1201
+        id: task1201
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1201
+          setup-command: ''
+          command: npm test -- -t "TASK1201"
+          timeout: 10
+          max-score: 1
+      - name: TASK1202
+        id: task1202
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1202
+          setup-command: ''
+          command: npm test -- -t "TASK1202"
+          timeout: 10
+          max-score: 1
+      - name: TASK1203
+        id: task1203
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1203
+          setup-command: ''
+          command: npm test -- -t "TASK1203"
+          timeout: 10
+          max-score: 1
+      - name: TASK1204
+        id: task1204
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1204
+          setup-command: ''
+          command: npm test -- -t "TASK1204"
+          timeout: 10
+          max-score: 1
+      - name: TASK1205
+        id: task1205
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1205
+          setup-command: ''
+          command: npm test -- -t "TASK1205"
+          timeout: 10
+          max-score: 1
+      - name: TASK1206
+        id: task1206
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1206
+          setup-command: ''
+          command: npm test -- -t "TASK1206"
+          timeout: 10
+          max-score: 1
+      - name: TASK1501
+        id: task1501
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1501
+          setup-command: ''
+          command: npm test -- -t "TASK1501"
+          timeout: 10
+          max-score: 1
+      - name: TASK1502
+        id: task1502
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1502
+          setup-command: ''
+          command: npm test -- -t "TASK1502"
+          timeout: 10
+          max-score: 1
+      - name: TASK1503
+        id: task1503
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1503
+          setup-command: ''
+          command: npm test -- -t "TASK1503"
+          timeout: 10
+          max-score: 1
+      - name: TASK1504
+        id: task1504
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1504
+          setup-command: ''
+          command: npm test -- -t "TASK1504"
+          timeout: 10
+          max-score: 1
+      - name: TASK1505
+        id: task1505
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1505
+          setup-command: ''
+          command: npm test -- -t "TASK1505"
+          timeout: 10
+          max-score: 1
+      - name: TASK1506
+        id: task1506
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1506
+          setup-command: ''
+          command: npm test -- -t "TASK1506"
+          timeout: 10
+          max-score: 1
+      - name: TASK1507
+        id: task1507
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1507
+          setup-command: ''
+          command: npm test -- -t "TASK1507"
+          timeout: 10
+          max-score: 1
+      - name: TASK1508
+        id: task1508
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1508
+          setup-command: ''
+          command: npm test -- -t "TASK1508"
+          timeout: 10
+          max-score: 1
+      - name: TASK2201
+        id: task2201
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2201
+          setup-command: ''
+          command: npm test -- -t "TASK2201"
+          timeout: 10
+          max-score: 1
+      - name: TASK2202
+        id: task2202
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2202
+          setup-command: ''
+          command: npm test -- -t "TASK2202"
+          timeout: 10
+          max-score: 1
+      - name: TASK3201
+        id: task3201
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3201
+          setup-command: ''
+          command: npm test -- -t "TASK3201"
+          timeout: 10
+          max-score: 1
+      - name: TASK3202
+        id: task3202
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3202
+          setup-command: ''
+          command: npm test -- -t "TASK3202"
+          timeout: 10
+          max-score: 1
+      - name: TASK4201
+        id: task4201
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4201
+          setup-command: ''
+          command: npm test -- -t "TASK4201"
+          timeout: 10
+          max-score: 1
+      - name: TASK4202
+        id: task4202
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4202
+          setup-command: ''
+          command: npm test -- -t "TASK4202"
+          timeout: 10
+          max-score: 1
+      - name: TASK5201
+        id: task5201
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5201
+          setup-command: ''
+          command: npm test -- -t "TASK5201"
+          timeout: 10
+          max-score: 1
+      - name: TASK5202
+        id: task5202
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5202
+          setup-command: ''
+          command: npm test -- -t "TASK5202"
+          timeout: 10
+          max-score: 1
+      - name: TASK5203
+        id: task5203
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5203
+          setup-command: ''
+          command: npm test -- -t "TASK5203"
+          timeout: 10
+          max-score: 1
+      - name: TASK5204
+        id: task5204
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5204
+          setup-command: ''
+          command: npm test -- -t "TASK5204"
+          timeout: 10
+          max-score: 1
+      - name: TASK5205
+        id: task5205
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5205
+          setup-command: ''
+          command: npm test -- -t "TASK5205"
+          timeout: 10
+          max-score: 1
+
+      # ============================================
+      # PHP TESTS
+      # ============================================
+
+      - name: TASK1301
+        id: task1301
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1301
+          command: composer test_auth -- --group TASK1301
+          timeout: 10
+          max-score: 1
+      - name: TASK1302
+        id: task1302
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1302
+          command: composer test_auth -- --group TASK1302
+          timeout: 10
+          max-score: 1
+      - name: TASK1303
+        id: task1303
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1303
+          command: composer test_auth -- --group TASK1303
+          timeout: 10
+          max-score: 1
+      - name: TASK1304
+        id: task1304
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1304
+          command: composer test_auth -- --group TASK1304
+          timeout: 10
+          max-score: 1
+      - name: TASK1305
+        id: task1305
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1305
+          command: composer test_auth -- --group TASK1305
+          timeout: 10
+          max-score: 1
+      - name: TASK1306
+        id: task1306
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1306
+          command: composer test_auth -- --group TASK1306
+          timeout: 10
+          max-score: 1
+      - name: TASK1307
+        id: task1307
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1307
+          command: composer test_auth -- --group TASK1307
+          timeout: 10
+          max-score: 1
+      - name: TASK1308
+        id: task1308
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1308
+          command: composer test_auth -- --group TASK1308
+          timeout: 10
+          max-score: 1
+      - name: TASK1309
+        id: task1309
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1309
+          command: composer test_auth -- --group TASK1309
+          timeout: 10
+          max-score: 1
+      - name: TASK1310
+        id: task1310
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1310
+          command: composer test_auth -- --group TASK1310
+          timeout: 10
+          max-score: 1
+      - name: TASK1311
+        id: task1311
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1311
+          command: composer test_auth -- --group TASK1311
+          timeout: 10
+          max-score: 1
+      - name: TASK1312
+        id: task1312
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1312
+          command: composer test_auth -- --group TASK1312
+          timeout: 10
+          max-score: 1
+      - name: TASK1313
+        id: task1313
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1313
+          command: composer test_auth -- --group TASK1313
+          timeout: 10
+          max-score: 1
+      - name: TASK1314
+        id: task1314
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1314
+          command: composer test_auth -- --group TASK1314
+          timeout: 10
+          max-score: 1
+      - name: TASK1315
+        id: task1315
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1315
+          command: composer test_auth -- --group TASK1315
+          timeout: 10
+          max-score: 1
+      - name: TASK1316
+        id: task1316
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1316
+          command: composer test_auth -- --group TASK1316
+          timeout: 10
+          max-score: 1
+      - name: TASK1317
+        id: task1317
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1317
+          command: composer test_auth -- --group TASK1317
+          timeout: 10
+          max-score: 1
+      - name: TASK1318
+        id: task1318
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1318
+          command: composer test_auth -- --group TASK1318
+          timeout: 10
+          max-score: 1
+      - name: TASK1601
+        id: task1601
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1601
+          command: composer test_admin -- --group TASK1601
+          timeout: 10
+          max-score: 1
+      - name: TASK1602
+        id: task1602
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1602
+          command: composer test_admin -- --group TASK1602
+          timeout: 10
+          max-score: 1
+      - name: TASK1603
+        id: task1603
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1603
+          command: composer test_admin -- --group TASK1603
+          timeout: 10
+          max-score: 1
+      - name: TASK1604
+        id: task1604
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1604
+          command: composer test_admin -- --group TASK1604
+          timeout: 10
+          max-score: 1
+      - name: TASK1605
+        id: task1605
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1605
+          command: composer test_admin -- --group TASK1605
+          timeout: 10
+          max-score: 1
+      - name: TASK1606
+        id: task1606
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1606
+          command: composer test_admin -- --group TASK1606
+          timeout: 10
+          max-score: 1
+      - name: TASK1607
+        id: task1607
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1607
+          command: composer test_admin -- --group TASK1607
+          timeout: 10
+          max-score: 1
+      - name: TASK1608
+        id: task1608
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1608
+          command: composer test_admin -- --group TASK1608
+          timeout: 10
+          max-score: 1
+      - name: TASK1611
+        id: task1611
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1611
+          command: composer test_admin -- --group TASK1611
+          timeout: 10
+          max-score: 1
+      - name: TASK1612
+        id: task1612
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1612
+          command: composer test_admin -- --group TASK1612
+          timeout: 10
+          max-score: 1
+      - name: TASK1613
+        id: task1613
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1613
+          command: composer test_admin -- --group TASK1613
+          timeout: 10
+          max-score: 1
+      - name: TASK1615
+        id: task1615
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1615
+          command: composer test_admin -- --group TASK1615
+          timeout: 10
+          max-score: 1
+      - name: TASK1616
+        id: task1616
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1616
+          command: composer test_admin -- --group TASK1616
+          timeout: 10
+          max-score: 1
+      - name: TASK1617
+        id: task1617
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1617
+          command: composer test_admin -- --group TASK1617
+          timeout: 10
+          max-score: 1
+      - name: TASK1618
+        id: task1618
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK1618
+          command: composer test_admin -- --group TASK1618
+          timeout: 10
+          max-score: 1
+      - name: TASK2301
+        id: task2301
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2301
+          command: composer test_resources -- --group TASK2301
+          timeout: 10
+          max-score: 1
+      - name: TASK2302
+        id: task2302
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2302
+          command: composer test_resources -- --group TASK2302
+          timeout: 10
+          max-score: 1
+      - name: TASK2303
+        id: task2303
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2303
+          command: composer test_resources -- --group TASK2303
+          timeout: 10
+          max-score: 1
+      - name: TASK2304
+        id: task2304
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2304
+          command: composer test_resources -- --group TASK2304
+          timeout: 10
+          max-score: 1
+      - name: TASK2305
+        id: task2305
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2305
+          command: composer test_resources -- --group TASK2305
+          timeout: 10
+          max-score: 1
+      - name: TASK2306
+        id: task2306
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2306
+          command: composer test_resources -- --group TASK2306
+          timeout: 10
+          max-score: 1
+      - name: TASK2307
+        id: task2307
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2307
+          command: composer test_resources -- --group TASK2307
+          timeout: 10
+          max-score: 1
+      - name: TASK2308
+        id: task2308
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2308
+          command: composer test_resources -- --group TASK2308
+          timeout: 10
+          max-score: 1
+      - name: TASK2311
+        id: task2311
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2311
+          command: composer test_resources -- --group TASK2311
+          timeout: 10
+          max-score: 1
+      - name: TASK2312
+        id: task2312
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2312
+          command: composer test_resources -- --group TASK2312
+          timeout: 10
+          max-score: 1
+      - name: TASK2313
+        id: task2313
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2313
+          command: composer test_resources -- --group TASK2313
+          timeout: 10
+          max-score: 1
+      - name: TASK2315
+        id: task2315
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2315
+          command: composer test_resources -- --group TASK2315
+          timeout: 10
+          max-score: 1
+      - name: TASK2316
+        id: task2316
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2316
+          command: composer test_resources -- --group TASK2316
+          timeout: 10
+          max-score: 1
+      - name: TASK2317
+        id: task2317
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2317
+          command: composer test_resources -- --group TASK2317
+          timeout: 10
+          max-score: 1
+      - name: TASK2318
+        id: task2318
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK2318
+          command: composer test_resources -- --group TASK2318
+          timeout: 10
+          max-score: 1
+      - name: TASK3301
+        id: task3301
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3301
+          command: composer test_weekly -- --group TASK3301
+          timeout: 10
+          max-score: 1
+      - name: TASK3302
+        id: task3302
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3302
+          command: composer test_weekly -- --group TASK3302
+          timeout: 10
+          max-score: 1
+      - name: TASK3303
+        id: task3303
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3303
+          command: composer test_weekly -- --group TASK3303
+          timeout: 10
+          max-score: 1
+      - name: TASK3304
+        id: task3304
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3304
+          command: composer test_weekly -- --group TASK3304
+          timeout: 10
+          max-score: 1
+      - name: TASK3305
+        id: task3305
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3305
+          command: composer test_weekly -- --group TASK3305
+          timeout: 10
+          max-score: 1
+      - name: TASK3306
+        id: task3306
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3306
+          command: composer test_weekly -- --group TASK3306
+          timeout: 10
+          max-score: 1
+      - name: TASK3307
+        id: task3307
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3307
+          command: composer test_weekly -- --group TASK3307
+          timeout: 10
+          max-score: 1
+      - name: TASK3308
+        id: task3308
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3308
+          command: composer test_weekly -- --group TASK3308
+          timeout: 10
+          max-score: 1
+      - name: TASK3311
+        id: task3311
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3311
+          command: composer test_weekly -- --group TASK3311
+          timeout: 10
+          max-score: 1
+      - name: TASK3312
+        id: task3312
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3312
+          command: composer test_weekly -- --group TASK3312
+          timeout: 10
+          max-score: 1
+      - name: TASK3313
+        id: task3313
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3313
+          command: composer test_weekly -- --group TASK3313
+          timeout: 10
+          max-score: 1
+      - name: TASK3315
+        id: task3315
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3315
+          command: composer test_weekly -- --group TASK3315
+          timeout: 10
+          max-score: 1
+      - name: TASK3316
+        id: task3316
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3316
+          command: composer test_weekly -- --group TASK3316
+          timeout: 10
+          max-score: 1
+      - name: TASK3317
+        id: task3317
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3317
+          command: composer test_weekly -- --group TASK3317
+          timeout: 10
+          max-score: 1
+      - name: TASK3318
+        id: task3318
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK3318
+          command: composer test_weekly -- --group TASK3318
+          timeout: 10
+          max-score: 1
+      - name: TASK4301
+        id: task4301
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4301
+          command: composer test_assignments -- --group TASK4301
+          timeout: 10
+          max-score: 1
+      - name: TASK4302
+        id: task4302
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4302
+          command: composer test_assignments -- --group TASK4302
+          timeout: 10
+          max-score: 1
+      - name: TASK4303
+        id: task4303
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4303
+          command: composer test_assignments -- --group TASK4303
+          timeout: 10
+          max-score: 1
+      - name: TASK4304
+        id: task4304
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4304
+          command: composer test_assignments -- --group TASK4304
+          timeout: 10
+          max-score: 1
+      - name: TASK4305
+        id: task4305
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4305
+          command: composer test_assignments -- --group TASK4305
+          timeout: 10
+          max-score: 1
+      - name: TASK4306
+        id: task4306
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4306
+          command: composer test_assignments -- --group TASK4306
+          timeout: 10
+          max-score: 1
+      - name: TASK4307
+        id: task4307
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4307
+          command: composer test_assignments -- --group TASK4307
+          timeout: 10
+          max-score: 1
+      - name: TASK4308
+        id: task4308
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4308
+          command: composer test_assignments -- --group TASK4308
+          timeout: 10
+          max-score: 1
+      - name: TASK4311
+        id: task4311
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4311
+          command: composer test_assignments -- --group TASK4311
+          timeout: 10
+          max-score: 1
+      - name: TASK4312
+        id: task4312
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4312
+          command: composer test_assignments -- --group TASK4312
+          timeout: 10
+          max-score: 1
+      - name: TASK4313
+        id: task4313
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4313
+          command: composer test_assignments -- --group TASK4313
+          timeout: 10
+          max-score: 1
+      - name: TASK4315
+        id: task4315
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4315
+          command: composer test_assignments -- --group TASK4315
+          timeout: 10
+          max-score: 1
+      - name: TASK4316
+        id: task4316
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4316
+          command: composer test_assignments -- --group TASK4316
+          timeout: 10
+          max-score: 1
+      - name: TASK4317
+        id: task4317
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4317
+          command: composer test_assignments -- --group TASK4317
+          timeout: 10
+          max-score: 1
+      - name: TASK4318
+        id: task4318
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK4318
+          command: composer test_assignments -- --group TASK4318
+          timeout: 10
+          max-score: 1
+      - name: TASK5301
+        id: task5301
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5301
+          command: composer test_discussion -- --group TASK5301
+          timeout: 10
+          max-score: 1
+      - name: TASK5302
+        id: task5302
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5302
+          command: composer test_discussion -- --group TASK5302
+          timeout: 10
+          max-score: 1
+      - name: TASK5303
+        id: task5303
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5303
+          command: composer test_discussion -- --group TASK5303
+          timeout: 10
+          max-score: 1
+      - name: TASK5304
+        id: task5304
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5304
+          command: composer test_discussion -- --group TASK5304
+          timeout: 10
+          max-score: 1
+      - name: TASK5305
+        id: task5305
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5305
+          command: composer test_discussion -- --group TASK5305
+          timeout: 10
+          max-score: 1
+      - name: TASK5306
+        id: task5306
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5306
+          command: composer test_discussion -- --group TASK5306
+          timeout: 10
+          max-score: 1
+      - name: TASK5307
+        id: task5307
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5307
+          command: composer test_discussion -- --group TASK5307
+          timeout: 10
+          max-score: 1
+      - name: TASK5308
+        id: task5308
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5308
+          command: composer test_discussion -- --group TASK5308
+          timeout: 10
+          max-score: 1
+      - name: TASK5311
+        id: task5311
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5311
+          command: composer test_discussion -- --group TASK5311
+          timeout: 10
+          max-score: 1
+      - name: TASK5312
+        id: task5312
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5312
+          command: composer test_discussion -- --group TASK5312
+          timeout: 10
+          max-score: 1
+      - name: TASK5313
+        id: task5313
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5313
+          command: composer test_discussion -- --group TASK5313
+          timeout: 10
+          max-score: 1
+      - name: TASK5315
+        id: task5315
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5315
+          command: composer test_discussion -- --group TASK5315
+          timeout: 10
+          max-score: 1
+      - name: TASK5316
+        id: task5316
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5316
+          command: composer test_discussion -- --group TASK5316
+          timeout: 10
+          max-score: 1
+      - name: TASK5317
+        id: task5317
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5317
+          command: composer test_discussion -- --group TASK5317
+          timeout: 10
+          max-score: 1
+      - name: TASK5318
+        id: task5318
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: TASK5318
+          command: composer test_discussion -- --group TASK5318
+          timeout: 10
+          max-score: 1
+
+      # ============================================
+      # AUTOGRADING REPORTER
+      # ============================================
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TASK1101_RESULTS: "${{ steps.task1101.outputs.result }}"
+          TASK1102_RESULTS: "${{ steps.task1102.outputs.result }}"
+          TASK1103_RESULTS: "${{ steps.task1103.outputs.result }}"
+          TASK1104_RESULTS: "${{ steps.task1104.outputs.result }}"
+          TASK1105_RESULTS: "${{ steps.task1105.outputs.result }}"
+          TASK1106_RESULTS: "${{ steps.task1106.outputs.result }}"
+          TASK1107_RESULTS: "${{ steps.task1107.outputs.result }}"
+          TASK1108_RESULTS: "${{ steps.task1108.outputs.result }}"
+          TASK1109_RESULTS: "${{ steps.task1109.outputs.result }}"
+          TASK1110_RESULTS: "${{ steps.task1110.outputs.result }}"
+          TASK1201_RESULTS: "${{ steps.task1201.outputs.result }}"
+          TASK1202_RESULTS: "${{ steps.task1202.outputs.result }}"
+          TASK1203_RESULTS: "${{ steps.task1203.outputs.result }}"
+          TASK1204_RESULTS: "${{ steps.task1204.outputs.result }}"
+          TASK1205_RESULTS: "${{ steps.task1205.outputs.result }}"
+          TASK1206_RESULTS: "${{ steps.task1206.outputs.result }}"
+          TASK1301_RESULTS: "${{ steps.task1301.outputs.result }}"
+          TASK1302_RESULTS: "${{ steps.task1302.outputs.result }}"
+          TASK1303_RESULTS: "${{ steps.task1303.outputs.result }}"
+          TASK1304_RESULTS: "${{ steps.task1304.outputs.result }}"
+          TASK1305_RESULTS: "${{ steps.task1305.outputs.result }}"
+          TASK1306_RESULTS: "${{ steps.task1306.outputs.result }}"
+          TASK1307_RESULTS: "${{ steps.task1307.outputs.result }}"
+          TASK1308_RESULTS: "${{ steps.task1308.outputs.result }}"
+          TASK1309_RESULTS: "${{ steps.task1309.outputs.result }}"
+          TASK1310_RESULTS: "${{ steps.task1310.outputs.result }}"
+          TASK1311_RESULTS: "${{ steps.task1311.outputs.result }}"
+          TASK1312_RESULTS: "${{ steps.task1312.outputs.result }}"
+          TASK1313_RESULTS: "${{ steps.task1313.outputs.result }}"
+          TASK1314_RESULTS: "${{ steps.task1314.outputs.result }}"
+          TASK1315_RESULTS: "${{ steps.task1315.outputs.result }}"
+          TASK1316_RESULTS: "${{ steps.task1316.outputs.result }}"
+          TASK1317_RESULTS: "${{ steps.task1317.outputs.result }}"
+          TASK1318_RESULTS: "${{ steps.task1318.outputs.result }}"
+          TASK1401_RESULTS: "${{ steps.task1401.outputs.result }}"
+          TASK1402_RESULTS: "${{ steps.task1402.outputs.result }}"
+          TASK1403_RESULTS: "${{ steps.task1403.outputs.result }}"
+          TASK1404_RESULTS: "${{ steps.task1404.outputs.result }}"
+          TASK1405_RESULTS: "${{ steps.task1405.outputs.result }}"
+          TASK1406_RESULTS: "${{ steps.task1406.outputs.result }}"
+          TASK1501_RESULTS: "${{ steps.task1501.outputs.result }}"
+          TASK1502_RESULTS: "${{ steps.task1502.outputs.result }}"
+          TASK1503_RESULTS: "${{ steps.task1503.outputs.result }}"
+          TASK1504_RESULTS: "${{ steps.task1504.outputs.result }}"
+          TASK1505_RESULTS: "${{ steps.task1505.outputs.result }}"
+          TASK1506_RESULTS: "${{ steps.task1506.outputs.result }}"
+          TASK1507_RESULTS: "${{ steps.task1507.outputs.result }}"
+          TASK1508_RESULTS: "${{ steps.task1508.outputs.result }}"
+          TASK1601_RESULTS: "${{ steps.task1601.outputs.result }}"
+          TASK1602_RESULTS: "${{ steps.task1602.outputs.result }}"
+          TASK1603_RESULTS: "${{ steps.task1603.outputs.result }}"
+          TASK1604_RESULTS: "${{ steps.task1604.outputs.result }}"
+          TASK1605_RESULTS: "${{ steps.task1605.outputs.result }}"
+          TASK1606_RESULTS: "${{ steps.task1606.outputs.result }}"
+          TASK1607_RESULTS: "${{ steps.task1607.outputs.result }}"
+          TASK1608_RESULTS: "${{ steps.task1608.outputs.result }}"
+          TASK1611_RESULTS: "${{ steps.task1611.outputs.result }}"
+          TASK1612_RESULTS: "${{ steps.task1612.outputs.result }}"
+          TASK1613_RESULTS: "${{ steps.task1613.outputs.result }}"
+          TASK1615_RESULTS: "${{ steps.task1615.outputs.result }}"
+          TASK1616_RESULTS: "${{ steps.task1616.outputs.result }}"
+          TASK1617_RESULTS: "${{ steps.task1617.outputs.result }}"
+          TASK1618_RESULTS: "${{ steps.task1618.outputs.result }}"
+          TASK2101_RESULTS: "${{ steps.task2101.outputs.result }}"
+          TASK2102_RESULTS: "${{ steps.task2102.outputs.result }}"
+          TASK2103_RESULTS: "${{ steps.task2103.outputs.result }}"
+          TASK2104_RESULTS: "${{ steps.task2104.outputs.result }}"
+          TASK2105_RESULTS: "${{ steps.task2105.outputs.result }}"
+          TASK2201_RESULTS: "${{ steps.task2201.outputs.result }}"
+          TASK2202_RESULTS: "${{ steps.task2202.outputs.result }}"
+          TASK2301_RESULTS: "${{ steps.task2301.outputs.result }}"
+          TASK2302_RESULTS: "${{ steps.task2302.outputs.result }}"
+          TASK2303_RESULTS: "${{ steps.task2303.outputs.result }}"
+          TASK2304_RESULTS: "${{ steps.task2304.outputs.result }}"
+          TASK2305_RESULTS: "${{ steps.task2305.outputs.result }}"
+          TASK2306_RESULTS: "${{ steps.task2306.outputs.result }}"
+          TASK2307_RESULTS: "${{ steps.task2307.outputs.result }}"
+          TASK2308_RESULTS: "${{ steps.task2308.outputs.result }}"
+          TASK2311_RESULTS: "${{ steps.task2311.outputs.result }}"
+          TASK2312_RESULTS: "${{ steps.task2312.outputs.result }}"
+          TASK2313_RESULTS: "${{ steps.task2313.outputs.result }}"
+          TASK2315_RESULTS: "${{ steps.task2315.outputs.result }}"
+          TASK2316_RESULTS: "${{ steps.task2316.outputs.result }}"
+          TASK2317_RESULTS: "${{ steps.task2317.outputs.result }}"
+          TASK2318_RESULTS: "${{ steps.task2318.outputs.result }}"
+          TASK3101_RESULTS: "${{ steps.task3101.outputs.result }}"
+          TASK3102_RESULTS: "${{ steps.task3102.outputs.result }}"
+          TASK3103_RESULTS: "${{ steps.task3103.outputs.result }}"
+          TASK3104_RESULTS: "${{ steps.task3104.outputs.result }}"
+          TASK3105_RESULTS: "${{ steps.task3105.outputs.result }}"
+          TASK3201_RESULTS: "${{ steps.task3201.outputs.result }}"
+          TASK3202_RESULTS: "${{ steps.task3202.outputs.result }}"
+          TASK3301_RESULTS: "${{ steps.task3301.outputs.result }}"
+          TASK3302_RESULTS: "${{ steps.task3302.outputs.result }}"
+          TASK3303_RESULTS: "${{ steps.task3303.outputs.result }}"
+          TASK3304_RESULTS: "${{ steps.task3304.outputs.result }}"
+          TASK3305_RESULTS: "${{ steps.task3305.outputs.result }}"
+          TASK3306_RESULTS: "${{ steps.task3306.outputs.result }}"
+          TASK3307_RESULTS: "${{ steps.task3307.outputs.result }}"
+          TASK3308_RESULTS: "${{ steps.task3308.outputs.result }}"
+          TASK3311_RESULTS: "${{ steps.task3311.outputs.result }}"
+          TASK3312_RESULTS: "${{ steps.task3312.outputs.result }}"
+          TASK3313_RESULTS: "${{ steps.task3313.outputs.result }}"
+          TASK3315_RESULTS: "${{ steps.task3315.outputs.result }}"
+          TASK3316_RESULTS: "${{ steps.task3316.outputs.result }}"
+          TASK3317_RESULTS: "${{ steps.task3317.outputs.result }}"
+          TASK3318_RESULTS: "${{ steps.task3318.outputs.result }}"
+          TASK4101_RESULTS: "${{ steps.task4101.outputs.result }}"
+          TASK4102_RESULTS: "${{ steps.task4102.outputs.result }}"
+          TASK4103_RESULTS: "${{ steps.task4103.outputs.result }}"
+          TASK4104_RESULTS: "${{ steps.task4104.outputs.result }}"
+          TASK4105_RESULTS: "${{ steps.task4105.outputs.result }}"
+          TASK4201_RESULTS: "${{ steps.task4201.outputs.result }}"
+          TASK4202_RESULTS: "${{ steps.task4202.outputs.result }}"
+          TASK4301_RESULTS: "${{ steps.task4301.outputs.result }}"
+          TASK4302_RESULTS: "${{ steps.task4302.outputs.result }}"
+          TASK4303_RESULTS: "${{ steps.task4303.outputs.result }}"
+          TASK4304_RESULTS: "${{ steps.task4304.outputs.result }}"
+          TASK4305_RESULTS: "${{ steps.task4305.outputs.result }}"
+          TASK4306_RESULTS: "${{ steps.task4306.outputs.result }}"
+          TASK4307_RESULTS: "${{ steps.task4307.outputs.result }}"
+          TASK4308_RESULTS: "${{ steps.task4308.outputs.result }}"
+          TASK4311_RESULTS: "${{ steps.task4311.outputs.result }}"
+          TASK4312_RESULTS: "${{ steps.task4312.outputs.result }}"
+          TASK4313_RESULTS: "${{ steps.task4313.outputs.result }}"
+          TASK4315_RESULTS: "${{ steps.task4315.outputs.result }}"
+          TASK4316_RESULTS: "${{ steps.task4316.outputs.result }}"
+          TASK4317_RESULTS: "${{ steps.task4317.outputs.result }}"
+          TASK4318_RESULTS: "${{ steps.task4318.outputs.result }}"
+          TASK5101_RESULTS: "${{ steps.task5101.outputs.result }}"
+          TASK5102_RESULTS: "${{ steps.task5102.outputs.result }}"
+          TASK5103_RESULTS: "${{ steps.task5103.outputs.result }}"
+          TASK5104_RESULTS: "${{ steps.task5104.outputs.result }}"
+          TASK5105_RESULTS: "${{ steps.task5105.outputs.result }}"
+          TASK5201_RESULTS: "${{ steps.task5201.outputs.result }}"
+          TASK5202_RESULTS: "${{ steps.task5202.outputs.result }}"
+          TASK5203_RESULTS: "${{ steps.task5203.outputs.result }}"
+          TASK5204_RESULTS: "${{ steps.task5204.outputs.result }}"
+          TASK5205_RESULTS: "${{ steps.task5205.outputs.result }}"
+          TASK5301_RESULTS: "${{ steps.task5301.outputs.result }}"
+          TASK5302_RESULTS: "${{ steps.task5302.outputs.result }}"
+          TASK5303_RESULTS: "${{ steps.task5303.outputs.result }}"
+          TASK5304_RESULTS: "${{ steps.task5304.outputs.result }}"
+          TASK5305_RESULTS: "${{ steps.task5305.outputs.result }}"
+          TASK5306_RESULTS: "${{ steps.task5306.outputs.result }}"
+          TASK5307_RESULTS: "${{ steps.task5307.outputs.result }}"
+          TASK5308_RESULTS: "${{ steps.task5308.outputs.result }}"
+          TASK5311_RESULTS: "${{ steps.task5311.outputs.result }}"
+          TASK5312_RESULTS: "${{ steps.task5312.outputs.result }}"
+          TASK5313_RESULTS: "${{ steps.task5313.outputs.result }}"
+          TASK5315_RESULTS: "${{ steps.task5315.outputs.result }}"
+          TASK5316_RESULTS: "${{ steps.task5316.outputs.result }}"
+          TASK5317_RESULTS: "${{ steps.task5317.outputs.result }}"
+          TASK5318_RESULTS: "${{ steps.task5318.outputs.result }}"
+        with:
+          runners: task1101,task1102,task1103,task1104,task1105,task1106,task1107,task1108,task1109,task1110,task1201,task1202,task1203,task1204,task1205,task1206,task1301,task1302,task1303,task1304,task1305,task1306,task1307,task1308,task1309,task1310,task1311,task1312,task1313,task1314,task1315,task1316,task1317,task1318,task1401,task1402,task1403,task1404,task1405,task1406,task1501,task1502,task1503,task1504,task1505,task1506,task1507,task1508,task1601,task1602,task1603,task1604,task1605,task1606,task1607,task1608,task1611,task1612,task1613,task1615,task1616,task1617,task1618,task2101,task2102,task2103,task2104,task2105,task2201,task2202,task2301,task2302,task2303,task2304,task2305,task2306,task2307,task2308,task2311,task2312,task2313,task2315,task2316,task2317,task2318,task3101,task3102,task3103,task3104,task3105,task3201,task3202,task3301,task3302,task3303,task3304,task3305,task3306,task3307,task3308,task3311,task3312,task3313,task3315,task3316,task3317,task3318,task4101,task4102,task4103,task4104,task4105,task4201,task4202,task4301,task4302,task4303,task4304,task4305,task4306,task4307,task4308,task4311,task4312,task4313,task4315,task4316,task4317,task4318,task5101,task5102,task5103,task5104,task5105,task5201,task5202,task5203,task5204,task5205,task5301,task5302,task5303,task5304,task5305,task5306,task5307,task5308,task5311,task5312,task5313,task5315,task5316,task5317,task5318

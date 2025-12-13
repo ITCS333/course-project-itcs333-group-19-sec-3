@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'course';
+$dbname = 'schema.sql';
 $username = 'root';
 $password = '';
 
