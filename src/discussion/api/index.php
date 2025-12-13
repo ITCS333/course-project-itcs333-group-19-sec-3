@@ -198,33 +198,45 @@ function deleteReply($db, $id, $currentUser, $currentUserRole){
     else sendResponse(['success'=>false,'error'=>'Failed to delete reply'],500);
 }
 
-// ------------------------------
-// Router
-// ------------------------------
-$method = $_SERVER['REQUEST_METHOD'];
-$resource = $_GET['resource'] ?? null;
-$id = $_GET['id'] ?? null;
-$payload = getJsonPayload();
 
-switch($resource){
-    case 'topics':
-        switch($method){
-            case 'GET': getAllTopics($db); break;
-            case 'POST': createTopic($db,$payload,$currentUser); break;
-            case 'PUT': updateTopic($db,$payload,$currentUser,$currentUserRole); break;
-            case 'DELETE': deleteTopic($db,$id,$currentUser,$currentUserRole); break;
-            default: sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
-        }
-        break;
-    case 'replies':
-        switch($method){
-            case 'GET': getReplies($db,$id); break;
-            case 'POST': createReply($db,$payload,$currentUser); break;
-            case 'DELETE': deleteReply($db,$id,$currentUser,$currentUserRole); break;
-            default: sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
-        }
-        break;
-    default:
-        sendResponse(['success'=>false,'error'=>'Invalid resource'],400);
+// ------------------------------
+// Router (with try-catch)
+// ------------------------------
+try {
+    $method = $_SERVER['REQUEST_METHOD'];
+    $resource = $_GET['resource'] ?? null;
+    $id = $_GET['id'] ?? null;
+    $payload = getJsonPayload();
+
+    switch($resource){
+        case 'topics':
+            switch($method){
+                case 'GET': getAllTopics($db); break;
+                case 'POST': createTopic($db,$payload,$currentUser); break;
+                case 'PUT': updateTopic($db,$payload,$currentUser,$currentUserRole); break;
+                case 'DELETE': deleteTopic($db,$id,$currentUser,$currentUserRole); break;
+                default: sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
+            }
+            break;
+
+        case 'replies':
+            switch($method){
+                case 'GET': getReplies($db,$id); break;
+                case 'POST': createReply($db,$payload,$currentUser); break;
+                case 'DELETE': deleteReply($db,$id,$currentUser,$currentUserRole); break;
+                default: sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
+            }
+            break;
+
+        default:
+            sendResponse(['success'=>false,'error'=>'Invalid resource'],400);
+    }
+
+} catch (PDOException $e) {
+    sendResponse([
+        'success' => false,
+        'error' => 'Database error occurred'
+    ], 500);
 }
+
 ?>
