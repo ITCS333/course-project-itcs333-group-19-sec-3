@@ -228,7 +228,7 @@ function createStudent($db, $data) {
 
     // TODO: Prepare INSERT query
     $insertSql = "INSERT INTO users (name, email, password, is_admin)
-                  VALUES (:name, :email, :password, is_admin)";
+                  VALUES (:name, :email, :password, :is_admin)";
     $insertStmt = $db->prepare($insertSql);
     // TODO: Bind parameters
     // Bind student_id, name, email, and hashed password
