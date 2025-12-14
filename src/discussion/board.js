@@ -63,10 +63,16 @@ async function fetchTopics() {
 function handleCreateTopic(event) {
     event.preventDefault();
 
-    if (!topicSubject || !topicMessage) return;
+    const form = event.target;
 
-    const subject = topicSubject.value.trim();
-    const message = topicMessage.value.trim();
+    const subjectInput = form.querySelector('#topic-subject');
+    const messageInput = form.querySelector('#topic-message');
+
+    if (!subjectInput || !messageInput) return;
+
+    const subject = subjectInput.value.trim();
+    const message = messageInput.value.trim();
+
     if (!subject || !message) return;
 
     const payload = { subject, message };
@@ -80,7 +86,7 @@ function handleCreateTopic(event) {
     .then(data => {
         if (data.success) {
             fetchTopics();
-            newTopicForm.reset();
+            form.reset();
         }
     })
     .catch(err => console.error(err));
