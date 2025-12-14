@@ -63,6 +63,8 @@ async function fetchTopics() {
 function handleCreateTopic(event) {
     event.preventDefault();
 
+    if (!topicSubject || !topicMessage) return;
+
     const subject = topicSubject.value.trim();
     const message = topicMessage.value.trim();
     if (!subject || !message) return;
@@ -83,6 +85,7 @@ function handleCreateTopic(event) {
     })
     .catch(err => console.error(err));
 }
+
 
 
 function handleTopicListClick(event) {
