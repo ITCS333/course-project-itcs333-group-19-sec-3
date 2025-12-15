@@ -1,11 +1,6 @@
 <?php
 session_start();
-
-// ------------------------------
-// User session
-// ------------------------------
-$currentUser = $_SESSION['username'] ?? null;
-$currentUserRole = $_SESSION['role'] ?? null; // 'student', 'teacher', 'admin'
+require 'Database.php';
 
 // ------------------------------
 // Headers
@@ -21,11 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // ------------------------------
-// Database
+// Database connection
 // ------------------------------
-require_once __DIR__ . '/Database.php';
 $database = new Database();
 $db = $database->getConnection();
+
+// ------------------------------
+// User session
+// ------------------------------
+$currentUser = $_SESSION['username'] ?? null;
+$currentUserRole = $_SESSION['role'] ?? null; // 'student', 'teacher', 'admin'
 
 // ------------------------------
 // Helpers
@@ -54,7 +54,7 @@ function getJsonPayload() {
 }
 
 // ------------------------------
-// CRUD Functions
+// TOPICS CRUD
 // ------------------------------
 function getAllTopics($db) {
     $stmt = $db->query("SELECT id, subject, message, author, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') as created_at FROM topics ORDER BY created_at DESC");
@@ -76,11 +76,7 @@ function createTopic($db, $data, $currentUser) {
 
     if ($stmt->execute()) {
         $id = $db->lastInsertId();
-        $stmt2 = $db->prepare("SELECT id, subject, message, author, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') as created_at FROM topics WHERE id=:id");
-        $stmt2->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt2->execute();
-        $topic = $stmt2->fetch(PDO::FETCH_ASSOC);
-        sendResponse(['success'=>true,'data'=>$topic],201);
+        sendResponse(['success'=>true,'data'=>['id'=>$id,'subject'=>$subject,'message'=>$message,'author'=>$currentUser]],201);
     } else {
         sendResponse(['success'=>false,'error'=>'Failed to create topic'],500);
     }
@@ -91,9 +87,9 @@ function updateTopic($db, $data, $currentUser, $currentUserRole) {
     if ($id <= 0) sendResponse(['success'=>false,'error'=>'Topic ID required'],400);
     if (!$currentUser) sendResponse(['success'=>false,'error'=>'Unauthorized'],401);
 
-    // Fetch author
+    // check ownership
     $stmt = $db->prepare("SELECT author FROM topics WHERE id=:id");
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':id',$id,PDO::PARAM_INT);
     $stmt->execute();
     $topic = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$topic) sendResponse(['success'=>false,'error'=>'Topic not found'],404);
@@ -123,9 +119,10 @@ function updateTopic($db, $data, $currentUser, $currentUserRole) {
 }
 
 function deleteTopic($db, $id, $currentUser, $currentUserRole) {
-    if (!$id) sendResponse(['success'=>false,'error'=>'Topic ID required'],400);
+    if ($id <= 0) sendResponse(['success'=>false,'error'=>'Topic ID required'],400);
     if (!$currentUser) sendResponse(['success'=>false,'error'=>'Unauthorized'],401);
 
+    // check ownership
     $stmt = $db->prepare("SELECT author FROM topics WHERE id=:id");
     $stmt->bindParam(':id',$id,PDO::PARAM_INT);
     $stmt->execute();
@@ -136,6 +133,11 @@ function deleteTopic($db, $id, $currentUser, $currentUserRole) {
     $isTeacher = ($currentUserRole === 'teacher' || $currentUserRole === 'admin');
     if (($currentUser !== $author) && !$isTeacher) sendResponse(['success'=>false,'error'=>'Permission denied'],403);
 
+    // delete replies first
+    $stmt = $db->prepare("DELETE FROM replies WHERE topic_id=:id");
+    $stmt->bindParam(':id',$id,PDO::PARAM_INT);
+    $stmt->execute();
+
     $stmt = $db->prepare("DELETE FROM topics WHERE id=:id");
     $stmt->bindParam(':id',$id,PDO::PARAM_INT);
     if($stmt->execute()) sendResponse(['success'=>true,'message'=>'Topic deleted']);
@@ -143,21 +145,98 @@ function deleteTopic($db, $id, $currentUser, $currentUserRole) {
 }
 
 // ------------------------------
-// Router
+// REPLIES CRUD
 // ------------------------------
-$method = $_SERVER['REQUEST_METHOD'];
-$payload = getJsonPayload();
-$id = isset($_GET['id']) ? (int)$_GET['id'] : ($payload['id'] ?? 0);
-
-try {
-    switch($method){
-        case 'GET': getAllTopics($db); break;
-        case 'POST': createTopic($db,$payload,$currentUser); break;
-        case 'PUT': updateTopic($db,$payload,$currentUser,$currentUserRole); break;
-        case 'DELETE': deleteTopic($db,$id,$currentUser,$currentUserRole); break;
-        default: sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
-    }
-} catch(PDOException $e){
-    sendResponse(['success'=>false,'error'=>$e->getMessage()],500);
+function getReplies($db, $topic_id) {
+    if (!$topic_id) sendResponse(['success'=>false,'error'=>'topic_id required'],400);
+    $stmt = $db->prepare("SELECT id, topic_id, text, author, DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') as created_at FROM replies WHERE topic_id=:tid ORDER BY created_at ASC");
+    $stmt->bindParam(':tid',$topic_id,PDO::PARAM_INT);
+    $stmt->execute();
+    $replies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    sendResponse(['success'=>true,'data'=>$replies]);
 }
+
+function createReply($db, $data, $currentUser) {
+    if (!$currentUser) sendResponse(['success'=>false,'error'=>'Unauthorized'],401);
+
+    $topic_id = (int)($data['topic_id'] ?? 0);
+    $text = trim($data['text'] ?? '');
+    if ($topic_id <=0 || $text==='') sendResponse(['success'=>false,'error'=>'topic_id and text required'],400);
+
+    // verify topic exists
+    $stmt = $db->prepare("SELECT id FROM topics WHERE id=:tid");
+    $stmt->bindParam(':tid',$topic_id,PDO::PARAM_INT);
+    $stmt->execute();
+    if (!$stmt->fetch()) sendResponse(['success'=>false,'error'=>'Topic does not exist'],404);
+
+    $stmt = $db->prepare("INSERT INTO replies (topic_id, text, author) VALUES (:tid, :txt, :auth)");
+    $stmt->bindParam(':tid',$topic_id,PDO::PARAM_INT);
+    $stmt->bindParam(':txt',sanitizeInput($text));
+    $stmt->bindParam(':auth',$currentUser);
+
+    if($stmt->execute()) sendResponse(['success'=>true,'data'=>['id'=>$db->lastInsertId(),'topic_id'=>$topic_id,'text'=>$text,'author'=>$currentUser]],201);
+    else sendResponse(['success'=>false,'error'=>'Failed to create reply'],500);
+}
+
+function deleteReply($db, $id, $currentUser, $currentUserRole){
+    if ($id <= 0) sendResponse(['success'=>false,'error'=>'Reply ID required'],400);
+    if (!$currentUser) sendResponse(['success'=>false,'error'=>'Unauthorized'],401);
+
+    $stmt = $db->prepare("SELECT author FROM replies WHERE id=:rid");
+    $stmt->bindParam(':rid',$id,PDO::PARAM_INT);
+    $stmt->execute();
+    $reply = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$reply) sendResponse(['success'=>false,'error'=>'Reply not found'],404);
+
+    $author = $reply['author'];
+    $isTeacher = ($currentUserRole==='teacher' || $currentUserRole==='admin');
+    if (($currentUser!==$author)&&!$isTeacher) sendResponse(['success'=>false,'error'=>'Permission denied'],403);
+
+    $stmt = $db->prepare("DELETE FROM replies WHERE id=:rid");
+    $stmt->bindParam(':rid',$id,PDO::PARAM_INT);
+    if($stmt->execute()) sendResponse(['success'=>true,'message'=>'Reply deleted']);
+    else sendResponse(['success'=>false,'error'=>'Failed to delete reply'],500);
+}
+
+
+// ------------------------------
+// Router (with try-catch)
+// ------------------------------
+try {
+    $method = $_SERVER['REQUEST_METHOD'];
+    $resource = $_GET['resource'] ?? null;
+    $id = $_GET['id'] ?? null;
+    $payload = getJsonPayload();
+
+    switch($resource){
+        case 'topics':
+            switch($method){
+                case 'GET': getAllTopics($db); break;
+                case 'POST': createTopic($db,$payload,$currentUser); break;
+                case 'PUT': updateTopic($db,$payload,$currentUser,$currentUserRole); break;
+                case 'DELETE': deleteTopic($db,$id,$currentUser,$currentUserRole); break;
+                default: sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
+            }
+            break;
+
+        case 'replies':
+            switch($method){
+                case 'GET': getReplies($db,$id); break;
+                case 'POST': createReply($db,$payload,$currentUser); break;
+                case 'DELETE': deleteReply($db,$id,$currentUser,$currentUserRole); break;
+                default: sendResponse(['success'=>false,'error'=>'Method not allowed'],405);
+            }
+            break;
+
+        default:
+            sendResponse(['success'=>false,'error'=>'Invalid resource'],400);
+    }
+
+} catch (PDOException $e) {
+    sendResponse([
+        'success' => false,
+        'error' => 'Database error occurred'
+    ], 500);
+}
+
 ?>

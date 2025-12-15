@@ -77,31 +77,46 @@ function renderTable() {
  * 5. Call `renderTable()` to refresh the list.
  * 6. Reset the form.
  */
-function handleAddResource(event) {
-  event.preventDefault(); 
+async function handleAddResource(event) {
+  event.preventDefault();
 
   const title = document.querySelector("#resource-title").value.trim();
   const description = document.querySelector("#resource-description").value.trim();
   const link = document.querySelector("#resource-link").value.trim();
 
   if (!title || !link) {
-    alert("Title and Link are required.");
+    alert("Title and link are required.");
     return;
   }
 
-  const newResource = {
-    id: `res_${Date.now()}`,
-    title,
-    description,
-    link
-  };
+  try {
+    // PHASE 3 UPDATE:
+    // Send data to the database via API
+    const response = await fetch("api/index.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title,
+        description,
+        link
+      })
+    });
 
-  resources.push(newResource);
+    const result = await response.json();
 
-  renderTable();
+    if (result.success) {
+      alert("Resource added successfully!");
+      await loadAndInitialize(); // refresh table from database
+      resourceForm.reset();
+    } else {
+      alert("Failed to add resource: " + result.message);
+    }
 
-  resourceForm.reset();
+  } catch (error) {
+    console.error("Error adding resource:", error);
+  }
 }
+
 
 /**
  * TODO: Implement the handleTableClick function.
@@ -113,17 +128,33 @@ function handleAddResource(event) {
  * with the matching ID (in-memory only).
  * 4. Call `renderTable()` to refresh the list.
  */
-function handleTableClick(event) {
-  const target = event.target;
+async function handleTableClick(event) {
+  if (!event.target.classList.contains("delete-btn")) return;
 
-  if (target.classList.contains("delete-btn")) {
-    const idToDelete = target.dataset.id;
+  const id = event.target.dataset.id;
+  if (!confirm("Are you sure you want to delete this resource?")) return;
 
-    resources = resources.filter(resource => resource.id !== idToDelete);
+  try {
+    // PHASE 3 UPDATE:
+    // Send DELETE request to the API
+    const response = await fetch(`api/index.php?id=${id}`, {
+      method: "DELETE"
+    });
 
-    renderTable();
+    const result = await response.json();
+
+    if (result.success) {
+      alert("Resource deleted.");
+      await loadAndInitialize(); // refresh
+    } else {
+      alert("Failed to delete resource: " + result.message);
+    }
+
+  } catch (error) {
+    console.error("Error deleting resource:", error);
   }
 }
+
 
 /**
  * TODO: Implement the loadAndInitialize function.
@@ -137,19 +168,23 @@ function handleTableClick(event) {
  */
 async function loadAndInitialize() {
   try {
-    const response = await fetch("api/resources.json");
-    resources = await response.json();
+    // PHASE 3 UPDATE:
+    // Resources now come from MySQL through index.php
+    const response = await fetch("api/index.php");
+    const data = await response.json();
 
-    renderTable(); // first table render
-
-    // Add event listeners
-    resourceForm.addEventListener("submit", handleAddResource);
-    resourcesTableBody.addEventListener("click", handleTableClick);
+    resources = data.data;
+    renderTable();
 
   } catch (error) {
     console.error("Error loading resources:", error);
   }
+
+  // Event Listeners
+  resourceForm.addEventListener("submit", handleAddResource);
+  resourcesTableBody.addEventListener("click", handleTableClick);
 }
+
 
 // --- Initial Page Load ---
 // Call the main async function to start the application.

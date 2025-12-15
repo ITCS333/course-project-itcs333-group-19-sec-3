@@ -51,8 +51,13 @@ function createResourceArticle(resource) {
  */
 async function loadResources() {
   try {
-    const response = await fetch("api/resources.json");
-    const resources = await response.json();
+    // PHASE 3 UPDATE:
+    // Pull resources from the live backend API (MySQL)
+    const response = await fetch("api/index.php");
+
+    const data = await response.json();
+
+    const resources = data.data;
 
     listSection.innerHTML = "";
 
@@ -63,7 +68,8 @@ async function loadResources() {
 
   } catch (error) {
     console.error("Error loading resources:", error);
-    listSection.innerHTML = "<p>Error loading resources.</p>";
+
+    listSection.innerHTML = "<p>Could not load resources. Please try again later.</p>";
   }
 }
 

@@ -107,21 +107,39 @@ function renderComments() {
  * 6. Call `renderComments()` to refresh the list.
  * 7. Clear the `newComment` textarea.
  */
-function handleAddComment(event) {
+async function handleAddComment(event) {
   event.preventDefault();
 
   const text = newComment.value.trim();
-  if (!text) return;
+  if (text === "") return;
 
-  const newCommentObj = {
-    author: "Student",
-    text: text
-  };
+  // Save comment to the database (Phase 3 requirement)
+  const response = await fetch("api/index.php?action=comment", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      resource_id: currentResourceId,
+      author: "Student",
+      text: text
+    })
+  });
 
-  currentComments.push(newCommentObj);
+  const result = await response.json();
 
-  renderComments();
-  newComment.value = "";
+  if (result.success) {
+    // Update UI immediately (optional but recommended)
+    currentComments.push({
+      author: "Student",
+      text: text
+    });
+
+    renderComments();
+    newComment.value = "";
+  } else {
+    console.error("Error adding comment:", result.message);
+  }
 }
 
 /**
@@ -150,26 +168,28 @@ async function initializePage() {
   }
 
   try {
-    const [resourcesResponse, commentsResponse] = await Promise.all([
-      fetch("api/resources.json"),
-      fetch("api/comments.json")
-    ]);
+    // 1. Fetch the resource
+    const resResponse = await fetch(`api/index.php?id=${currentResourceId}`);
+    const resData = await resResponse.json();
 
-    const resourcesData = await resourcesResponse.json();
+    if (!resData.success) {
+      resourceTitle.textContent = "Resource not found.";
+      return;
+    }
+
+    renderResourceDetails(resData.data);
+
+    // 2. Fetch comments
+    const commentsResponse = await fetch(
+      `api/index.php?action=comments&resource_id=${currentResourceId}`
+    );
     const commentsData = await commentsResponse.json();
 
-    const resource = resourcesData.find(r => r.id === currentResourceId);
+    currentComments = commentsData.data || [];
+    renderComments();
 
-    currentComments = commentsData[currentResourceId] || [];
-
-    if (resource) {
-      renderResourceDetails(resource);
-      renderComments();
-
-      commentForm.addEventListener("submit", handleAddComment);
-    } else {
-      resourceTitle.textContent = "Resource not found.";
-    }
+    // 3. Enable comment form
+    commentForm.addEventListener("submit", handleAddComment);
 
   } catch (error) {
     console.error("Error loading resource details:", error);

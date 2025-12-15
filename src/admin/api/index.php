@@ -30,6 +30,10 @@
 // Allow cross-origin requests (CORS) if needed
 // Allow specific HTTP methods (GET, POST, PUT, DELETE, OPTIONS)
 // Allow specific headers (Content-Type, Authorization)
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    $_SESSION['logged_in'] = false;
+}
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -48,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // TODO: Include the database connection class
 // Assume the Database class has a method getConnection() that returns a PDO instance
-require __DIR__ . '/../../../db.php';
+require __DIR__ . '/../../db.php';
 // TODO: Get the PDO database connection
 $db = getDBConnection();
 
@@ -227,7 +231,7 @@ function createStudent($db, $data) {
 
     // TODO: Prepare INSERT query
     $insertSql = "INSERT INTO users (name, email, password, is_admin)
-                  VALUES (:name, :email, :password, is_admin)";
+                  VALUES (:name, :email, :password, :is_admin)";
     $insertStmt = $db->prepare($insertSql);
     // TODO: Bind parameters
     // Bind student_id, name, email, and hashed password
