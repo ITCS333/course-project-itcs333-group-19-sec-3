@@ -39,27 +39,38 @@
 // HEADERS AND CORS CONFIGURATION
 // ============================================================================
 
-// TODO: Set Content-Type header to application/json
-header('Content-type: application/json');
+//start session
+session_start();
 
+$_SESSION['initialized'] = true;
+
+
+// TODO: Set Content-Type header to application/json
+header('Content-Type: application/json');
 // TODO: Set CORS headers to allow cross-origin requests
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // TODO: Handle preflight OPTIONS request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
+if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'PUT' || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'Admin access required']);
+        exit();
+    }
 }
-
 
 // ============================================================================
 // DATABASE CONNECTION
 // ============================================================================
 
-require_once 'db.php';
-
+require_once "../../config/Database.php";
+// TODO: Create database connection
+$database=new Database();
+$db=$database->getConnection();
+// TODO: Set PDO to throw exceptions on errors
+   // already declared in the database file 
 
 // ============================================================================
 // REQUEST PARSING
