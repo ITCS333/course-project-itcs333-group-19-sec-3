@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'PUT' 
 // DATABASE CONNECTION
 // ============================================================================
 
-require_once "../../config/Database.php";
+require_once "db.php";
 // TODO: Create database connection
 $database=new Database();
 $db=$database->getConnection();
